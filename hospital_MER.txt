@@ -1,5 +1,4 @@
 Paciente: pk:id, nome, cpf(unique), data_nascimento
 Historico_Clinico: pk:id, fk:id_Paciente, doença, alergia, medicacao_alergica
 Medico: pk:id, nome, crm(unique)
-Hospital: pk:id, nome, endereco
 Prontuario: pk:id, fk:id_Paciente, fk:id_Medico, fk:id_Hospital, fk:id_Historico_Clinico, descricao, data_atendimento

@@ -78,7 +78,7 @@ def test_insert_value(session):
 
 def test_get_paciente(session_two):
     cursor, connect = session_two
-    cursor.execute("SELECT Nome FROM Pacientes WHERE LOWER(nome) LIKE LOWER('%PAULO%')")
+    cursor.execute("SELECT Nome FROM Pacientes WHERE LOWER(nome) LIKE LOWER('%PAULO%');")
     record = cursor.fetchone()
     assert record[0] == 'Paulo Everton'
 

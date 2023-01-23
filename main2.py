@@ -1,15 +1,19 @@
 import sqlite3
 from dotenv import dotenv_values
 from time import sleep
+import os
+
+os.system('cls')
 
 # cria conexão com o banco
 def connect_db(path_db:str):
     "this connect to db that you want, inform the: .db"
-    print('conectado.')
+    #print('conectado.')
     try:
-        sqlite3.connect(path_db)
+        conn = sqlite3.connect(path_db)
     except Exception as ex:
         print(ex)
+    return conn
 
 def create_table_paciente(cursor):
     columns = ["Nome","CPF","Data_Nascimento","Endereco"]
@@ -30,9 +34,13 @@ def insert_values_into_paciente(cursor):
 
 def find_paciente(cursor):
     paciente_nome = input("nome do paciente: ")
-    query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER(%{paciente_nome}%)"
+    query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('%{paciente_nome}%');"
     cursor.execute(query)
-    print(cursor.fetchone())
+    #print(cursor.fetchmany(5))
+    if cursor.fetchmany(5) == []:
+        print('nenhum cadastro encontrado.')
+    else:
+        print(cursor.fetchmany(5))
 
     # question = input("para mostrar mais resultados digite S: ").strip().upper
     # if question == 'S':
@@ -47,30 +55,37 @@ def update_paciente(cursor):
 
 def del_paciente(cursor):
     ID = input('informe o ID a ser deletado: ')
-    cursor.execute(f"DELETE Paciente WHERE ID = {ID}; ")
+    cursor.execute(f"DELETE FROM Paciente WHERE ID = {int(ID)}; ")
 
 def main_menu():
-    return """
+    menu = """
     1 - criar registro na tabela
-    2 - consultar registro na tabela
+    2 - consultar registros na tabela
     3 - Atualizar registro na tabela
     4 - Deletar registro na tabela
     5 - Encerrar programa
     """
+    print(menu)
+
+def conn_close(conn):
+    if conn:
+        conn.close()
+
 
 conn = connect_db("Hospital.db")
 cur = conn.cursor()
 create_table_paciente(cursor=cur)
 
-print("Bem-Vindo ao controle de pacientes do hospital.")
-
 while True:
     if __name__ == "__main__":
-                
-        main_menu()
-        option = "digite sua opção: "
 
         try:
+            
+            conn = connect_db("Hospital.db")
+            cur = conn.cursor()
+            print("Bem-Vindo ao controle de pacientes do hospital.")
+            main_menu()
+            option = input("digite sua opção: ")
             
             if option == '1':
                 insert_values_into_paciente(cursor=cur)
@@ -86,17 +101,18 @@ while True:
                 
             elif option == '5':
                 print('programa finalizado.')
-                sleep(2) 
+                conn_close(conn)
+                sleep(2)
+                break
+                exit()
+
             else:
-                while option not in ['1','2','3','4','5']:
-                    option = input("opção inválida, digite novamente: ")
+                option = input("opção inválida, digite novamente: ")
+            
             conn.commit()
 
         except Exception as ex:
             print(ex)
 
         finally:
-            if conn:
-                conn.close()
-
-exit()
+            conn_close(conn)
