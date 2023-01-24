@@ -36,25 +36,41 @@ def find_paciente(cursor):
     paciente_nome = input("nome do paciente: ")
     query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('%{paciente_nome}%');"
     cursor.execute(query)
-    #print(cursor.fetchmany(5))
-    if cursor.fetchmany(5) == []:
-        print('nenhum cadastro encontrado.')
-    else:
-        print(cursor.fetchmany(5))
+    #print(cursor.fetchone())
+    results =(cursor.fetchmany(1))
+    #print(type(results))
+    for c in results:
+        print(c, end='\n')
+    question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
+    while question == 'S':
+        results =(cursor.fetchmany(1))
+        for c in results:
+            print(c, end='\n')
+        question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
+        if results == []:
+            print('sem mais resultados.')
+            question = 'n'
+    #print(cursor.fetchall())
+    # if cursor.fetchmany(5) == () and []:
+    #     print('nenhum cadastro encontrado.')
+    # else:
+    #     print(cursor.fetchmany(2))
 
     # question = input("para mostrar mais resultados digite S: ").strip().upper
     # if question == 'S':
-    #     cursor.fetchmany(5)
+    #     cursor.fetchmany(5)2
 
 def update_paciente(cursor):
     ID = input("infome o ID do paciente:")
     column = input("Informe o campo a receber atualização:")
     valor = input("o novo valor: ")
-    cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {ID};")
-    print('valor atualizado')
+    cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {int(ID)};")
+    print('valor atualizado', cursor.execute(f'SELECT * FROM Paciente WHERE ID = {int(ID)};'))
 
 def del_paciente(cursor):
     ID = input('informe o ID a ser deletado: ')
+    cursor.execute(f'SELECT * FROM Paciente WHERE ID = {int(ID)};')
+    print('seguinte registro foi deletado: \n',cursor.fetchone())
     cursor.execute(f"DELETE FROM Paciente WHERE ID = {int(ID)}; ")
 
 def main_menu():
@@ -83,7 +99,7 @@ while True:
             
             conn = connect_db("Hospital.db")
             cur = conn.cursor()
-            print("Bem-Vindo ao controle de pacientes do hospital.")
+            print("\nBem-Vindo ao controle de pacientes do hospital.")
             main_menu()
             option = input("digite sua opção: ")
             
@@ -102,8 +118,9 @@ while True:
             elif option == '5':
                 print('programa finalizado.')
                 conn_close(conn)
-                sleep(2)
+                sleep(1)
                 break
+                #os.system('cls')
                 exit()
 
             else:
