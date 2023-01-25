@@ -37,35 +37,26 @@ def find_paciente(cursor):
     query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('%{paciente_nome}%');"
     cursor.execute(query)
     #print(cursor.fetchone())
-    results =(cursor.fetchmany(1))
+    results =(cursor.fetchmany(5))
     #print(type(results))
     for c in results:
         print(c, end='\n')
     question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
     while question == 'S':
-        results =(cursor.fetchmany(1))
+        results =(cursor.fetchmany(5))
         for c in results:
             print(c, end='\n')
         question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
         if results == []:
             print('sem mais resultados.')
             question = 'n'
-    #print(cursor.fetchall())
-    # if cursor.fetchmany(5) == () and []:
-    #     print('nenhum cadastro encontrado.')
-    # else:
-    #     print(cursor.fetchmany(2))
-
-    # question = input("para mostrar mais resultados digite S: ").strip().upper
-    # if question == 'S':
-    #     cursor.fetchmany(5)2
 
 def update_paciente(cursor):
     ID = input("infome o ID do paciente:")
     column = input("Informe o campo a receber atualização:")
     valor = input("o novo valor: ")
     cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {int(ID)};")
-    print('valor atualizado', cursor.execute(f'SELECT * FROM Paciente WHERE ID = {int(ID)};'))
+    print(f'o registro da coluna {column} foi atualizado para o novo valor {valor}.')
 
 def del_paciente(cursor):
     ID = input('informe o ID a ser deletado: ')
@@ -79,9 +70,16 @@ def main_menu():
     2 - consultar registros na tabela
     3 - Atualizar registro na tabela
     4 - Deletar registro na tabela
-    5 - Encerrar programa
+    5 - Mostrar todos os registros
+    6 - Encerrar programa
     """
     print(menu)
+
+def show_all(cursor):
+    cursor.execute('SELECT * FROM Paciente ;')
+    for d in cursor.fetchall():
+        sleep(0.5)
+        print(d)
 
 def conn_close(conn):
     if conn:
@@ -116,6 +114,9 @@ while True:
                 del_paciente(cursor=cur)
                 
             elif option == '5':
+                show_all(cursor=cur)
+
+            elif option == '6':
                 print('programa finalizado.')
                 conn_close(conn)
                 sleep(1)
