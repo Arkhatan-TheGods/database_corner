@@ -2,6 +2,7 @@ import sqlite3
 from dotenv import dotenv_values
 from time import sleep
 import os
+from datetime import date, datetime
 
 os.system('cls')
 
@@ -26,6 +27,20 @@ def create_table_paciente(cursor):
     """.format("Paciente", "Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE, Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL ")
     cursor.execute(query)
 
+def create_table_medico(cursor):
+    query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
+    """.format('Medico','Nome TEXT NOT NULL, CRM TEXT NOT NULL UNIQUE')
+
+def create_table_historico_clinico(cursor):
+    query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
+    """.format('Historico_Clinico',"""ID_Paciente INTEGER NOT NULL,Doenca TEXT NOT NULL, Alergia TEXT NOT NULL, Medicacao TEXT NOT NULL,
+    FOREIGN KEY(ID_Paciente) REFERENCES Paciente(ID)""")
+
+def create_table_prontuario(cursor):
+    query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
+    """.format('Prontuario',"""ID_Paciente INTEGER NOT NULL, ID_Medico INTEGER NOT NULL, ID_Historico_Clinico INTEGER NOT NULL,
+    Descricao TEXT NOT NULL, Data_Atendimento TEXT NOT NULL""")
+
 # insere valores do paciente na tabela paciente dentro do banco
 def insert_values_into_paciente(cursor):
     nome = input("nome do paciente: ")
@@ -35,7 +50,34 @@ def insert_values_into_paciente(cursor):
     values = (nome,cpf,dt_nasc,endereco)
     query = f"""INSERT INTO {'Paciente'}({'Nome,CPF,Data_Nascimento,Endereco'})
     VALUES('{values[0]}', '{values[1]}', '{values[2]}', '{values[3]}'); """
-    #.format("Paciente","Nome, CPF, Data_Nascimento, Endereco",values)
+    cursor.execute(query)
+
+def insert_values_into_medico(cursor):
+    nome = input("nome do médico: ")
+    crm = input("número do CRM: ")
+    query = f"""INSERT INTO {'Medico'}(Nome,CRM) VALUES('{nome}','{crm}');"""
+    cursor.execute(query)
+
+def insert_values_into_historico_clinico(cursor):
+    id_paciente = int(input('id paciente: '))
+    doenca = input('doença(s): ')
+    alergia = input('alergia(s): ')
+    medicacao = input('remédios: ')
+    values = (id_paciente,doenca,alergia,medicacao)
+    query = f"""INSERT INTO {'Historico_Clinico'}(ID_Paciente,Doenca,Alergia,Medicacao)
+    VALUES ('{values[0]}','{values[1]}','{values[2]}','{values[3]}' """
+    cursor.execute(query)
+
+def insert_values_into_prontuario(cursor):
+    id_paciente = int(input('id paciente: '))
+    id_medico = int(input('id médico: '))
+    id_h_clinico = int(input('id histórico clinico: '))
+    descricao = input('descreva os sintomas que o paciente apresenta: ')
+    data_atual = date.today()
+    dt_atendimento = f"{str(data_atual.day)}/{str(data_atual.month)}/{str(data_atual.year)}"
+    values = (id_paciente, id_medico, id_h_clinico, dt_atendimento)
+    query = f"""INSERT INTO {'Prontuario'}(ID_Paciente, ID_Medico, ID_Historico_Clinico, Descricao, Data_Atendimento)
+    VALUES ('{values[0]}','{values[1]}','{values[2]}','{values[3]}') """
     cursor.execute(query)
 
 # procura pacientes que tenham o nome informado e tem a possiblidade de mostrar mais 5 resultados
@@ -98,6 +140,7 @@ def conn_close(conn):
 
 conn = connect_db("Hospital.db")
 cur = conn.cursor()
+fk = cur.execute('PRAGMA foreign_keys = ON;')
 create_table_paciente(cursor=cur)
 conn_close(conn)
 
@@ -141,9 +184,7 @@ while True:
             conn.commit()
 
         except Exception as ex:
-            print(type(ex))
-            if ex == 'UNIQUE constraint failed: Paciente.CPF':
-                print('Erro, CPF já cadastrado.')
-
+            print(ex)
+            
         finally:
             conn_close(conn)
