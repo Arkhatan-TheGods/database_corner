@@ -15,6 +15,11 @@ def connect_db(path_db:str):
         print(ex)
     return conn
 
+def route_db():
+    config = dotenv_values('.env.ambient')
+    path_db = config.get('hospital')
+    return path_db
+
 # cria tabela paciente no banco 
 def create_table_paciente(cursor):
     query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
@@ -46,8 +51,7 @@ def find_paciente(cursor):
         if results == []:
             print('sem mais resultados.')
             question = 'n'
-        else:
-            question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
+        question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
 
 # atualiza registro do paciente a partir do ID que é fixo e único
 def update_paciente(cursor):
