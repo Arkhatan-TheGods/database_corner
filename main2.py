@@ -15,12 +15,13 @@ def connect_db(path_db:str):
         print(ex)
     return conn
 
+# cria tabela paciente no banco 
 def create_table_paciente(cursor):
-    columns = ["Nome","CPF","Data_Nascimento","Endereco"]
     query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
-    """.format("Paciente", "Nome TEXT NOT NULL, CPF TEXT NOT NULL, Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL ")
+    """.format("Paciente", "Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE, Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL ")
     cursor.execute(query)
 
+# insere valores do paciente na tabela paciente dentro do banco
 def insert_values_into_paciente(cursor):
     nome = input("nome do paciente: ")
     cpf = input("CPF: ")
@@ -32,25 +33,23 @@ def insert_values_into_paciente(cursor):
     #.format("Paciente","Nome, CPF, Data_Nascimento, Endereco",values)
     cursor.execute(query)
 
+# procura pacientes que tenham o nome informado e tem a possiblidade de mostrar mais 5 resultados
 def find_paciente(cursor):
     paciente_nome = input("nome do paciente: ")
     query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('%{paciente_nome}%');"
     cursor.execute(query)
-    #print(cursor.fetchone())
-    results =(cursor.fetchmany(5))
-    #print(type(results))
-    for c in results:
-        print(c, end='\n')
-    question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
+    question = 'S'
     while question == 'S':
-        results =(cursor.fetchmany(5))
+        results = (cursor.fetchmany(5))
         for c in results:
             print(c, end='\n')
-        question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
         if results == []:
             print('sem mais resultados.')
             question = 'n'
+        else:
+            question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
 
+# atualiza registro do paciente a partir do ID que é fixo e único
 def update_paciente(cursor):
     ID = input("infome o ID do paciente:")
     column = input("Informe o campo a receber atualização:")
@@ -58,12 +57,14 @@ def update_paciente(cursor):
     cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {int(ID)};")
     print(f'o registro da coluna {column} foi atualizado para o novo valor {valor}.')
 
+# deleta registro do paciente permanentemente
 def del_paciente(cursor):
     ID = input('informe o ID a ser deletado: ')
     cursor.execute(f'SELECT * FROM Paciente WHERE ID = {int(ID)};')
     print('seguinte registro foi deletado: \n',cursor.fetchone())
     cursor.execute(f"DELETE FROM Paciente WHERE ID = {int(ID)}; ")
 
+# mostra as opções disponíveis
 def main_menu():
     menu = """
     1 - criar registro na tabela
@@ -75,12 +76,17 @@ def main_menu():
     """
     print(menu)
 
+# mostra todos os valores da tabela paciente
 def show_all(cursor):
-    cursor.execute('SELECT * FROM Paciente ;')
-    for d in cursor.fetchall():
+    cursor.execute('SELECT * FROM Paciente;')
+    results = cursor.fetchall()
+    for d in results:
         sleep(0.5)
         print(d)
+    if results == []:
+        print('\nnenhum registro.')
 
+# fecha a conexão com o banco
 def conn_close(conn):
     if conn:
         conn.close()
@@ -89,6 +95,7 @@ def conn_close(conn):
 conn = connect_db("Hospital.db")
 cur = conn.cursor()
 create_table_paciente(cursor=cur)
+conn_close(conn)
 
 while True:
     if __name__ == "__main__":
@@ -99,7 +106,7 @@ while True:
             cur = conn.cursor()
             print("\nBem-Vindo ao controle de pacientes do hospital.")
             main_menu()
-            option = input("digite sua opção: ")
+            option = input("digite sua opção: ").strip()
             
             if option == '1':
                 insert_values_into_paciente(cursor=cur)
@@ -130,7 +137,9 @@ while True:
             conn.commit()
 
         except Exception as ex:
-            print(ex)
+            print(type(ex))
+            if ex == 'UNIQUE constraint failed: Paciente.CPF':
+                print('Erro, CPF já cadastrado.')
 
         finally:
             conn_close(conn)
