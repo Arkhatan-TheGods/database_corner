@@ -118,7 +118,14 @@ def find_medico(cursor):
 
 # atualiza registro do paciente a partir do ID que é fixo e único
 def update_paciente(cursor):
-    ID = input("infome o ID do paciente:")
+    ID = input("Infome o ID do paciente: ")
+    column = input("Informe o campo a receber atualização:")
+    valor = input("o novo valor: ")
+    cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {int(ID)};")
+    print(f'o registro da coluna {column} foi atualizado para o novo valor {valor}.')
+
+def update_medico(cursor):
+    ID = input('Informe o ID do médico: ')
     column = input("Informe o campo a receber atualização:")
     valor = input("o novo valor: ")
     cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {int(ID)};")
@@ -126,13 +133,23 @@ def update_paciente(cursor):
 
 # deleta registro do paciente permanentemente
 def del_paciente(cursor):
-    ID = input('informe o ID a ser deletado: ')
-    cursor.execute(f'SELECT * FROM Paciente WHERE ID = {int(ID)};')
+    ID = int(input('informe o ID a ser deletado: '))
+    cursor.execute(f'SELECT * FROM Paciente WHERE ID = {ID};')
     print('seguinte registro foi deletado: \n',cursor.fetchone())
-    cursor.execute(f"DELETE FROM Paciente WHERE ID = {int(ID)}; ")
+    cursor.execute(f"DELETE FROM Paciente WHERE ID = {ID}; ")
+
+# 
+def main_menu():
+    menu = """
+    1 - acessar registro de pacientes
+    2 - acessar registro de médicos
+    3 - acessar registro de histórico clínico
+    4 - acessar registro de prontuário
+    """
+    print(menu)
 
 # mostra as opções disponíveis
-def main_menu():
+def options():
     menu = """
     1 - criar registro na tabela
     2 - consultar registros na tabela
@@ -159,18 +176,18 @@ def conn_close(conn):
         conn.close()
 
 
-conn = connect_db("Hospital.db")
-cur = conn.cursor()
-fk = cur.execute('PRAGMA foreign_keys = ON;')
-create_table_paciente(cursor=cur)
-create_table_medico(cursor=cur)
-create_table_historico_clinico(cursor=cur)
-create_table_prontuario(cursor=cur)
-conn_close(conn)
+if __name__ == "__main__":
 
-while True:
-    if __name__ == "__main__":
+    conn = connect_db("Hospital.db")
+    cur = conn.cursor()
+    fk = cur.execute('PRAGMA foreign_keys = ON;')
+    create_table_paciente(cursor=cur)
+    create_table_medico(cursor=cur)
+    create_table_historico_clinico(cursor=cur)
+    create_table_prontuario(cursor=cur)
+    conn_close(conn)
 
+    while True:        
         try:
             
             conn = connect_db("Hospital.db")
@@ -199,7 +216,6 @@ while True:
                 conn_close(conn)
                 sleep(1)
                 break
-                #os.system('cls')
                 exit()
 
             else:

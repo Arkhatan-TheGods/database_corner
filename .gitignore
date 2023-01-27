@@ -3,3 +3,4 @@ env_project_database/
 tests/__pycache__/test_CRUD.cpython-311-pytest-7.2.1.pyc
 o que fazer.txt
 Hospital.db
+main3.py
