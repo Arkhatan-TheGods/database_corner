@@ -16,6 +16,7 @@ def connect_db(path_db:str):
         print(ex)
     return conn
 
+# caminho do banco 
 def route_db():
     config = dotenv_values('.env.ambient')
     path_db = config.get('hospital')
@@ -27,15 +28,18 @@ def create_table_paciente(cursor):
     """.format("Paciente", "Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE, Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL ")
     cursor.execute(query)
 
+# cria tabela medico no banco
 def create_table_medico(cursor):
     query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
     """.format('Medico','Nome TEXT NOT NULL, CRM TEXT NOT NULL UNIQUE')
 
+# cria tabela historico clinico no banco
 def create_table_historico_clinico(cursor):
     query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
     """.format('Historico_Clinico',"""ID_Paciente INTEGER NOT NULL,Doenca TEXT NOT NULL, Alergia TEXT NOT NULL, Medicacao TEXT NOT NULL,
     FOREIGN KEY(ID_Paciente) REFERENCES Paciente(ID)""")
 
+# cria tabela prontuario no banco
 def create_table_prontuario(cursor):
     query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
     """.format('Prontuario',"""ID_Paciente INTEGER NOT NULL, ID_Medico INTEGER NOT NULL, ID_Historico_Clinico INTEGER NOT NULL,
@@ -52,12 +56,14 @@ def insert_values_into_paciente(cursor):
     VALUES('{values[0]}', '{values[1]}', '{values[2]}', '{values[3]}'); """
     cursor.execute(query)
 
+# insere valores do medico na tabela medico dentro do banco
 def insert_values_into_medico(cursor):
     nome = input("nome do médico: ")
     crm = input("número do CRM: ")
     query = f"""INSERT INTO {'Medico'}(Nome,CRM) VALUES('{nome}','{crm}');"""
     cursor.execute(query)
 
+# insere valores do paciente na tabela historico clinico dentro do banco
 def insert_values_into_historico_clinico(cursor):
     id_paciente = int(input('id paciente: '))
     doenca = input('doença(s): ')
@@ -65,9 +71,10 @@ def insert_values_into_historico_clinico(cursor):
     medicacao = input('remédios: ')
     values = (id_paciente,doenca,alergia,medicacao)
     query = f"""INSERT INTO {'Historico_Clinico'}(ID_Paciente,Doenca,Alergia,Medicacao)
-    VALUES ('{values[0]}','{values[1]}','{values[2]}','{values[3]}' """
+    VALUES ('{values[0]}','{values[1]}','{values[2]}','{values[3]}'); """
     cursor.execute(query)
 
+# insere valores do paciente na tabela prontuario dentro do banco
 def insert_values_into_prontuario(cursor):
     id_paciente = int(input('id paciente: '))
     id_medico = int(input('id médico: '))
@@ -77,14 +84,28 @@ def insert_values_into_prontuario(cursor):
     dt_atendimento = f"{str(data_atual.day)}/{str(data_atual.month)}/{str(data_atual.year)}"
     values = (id_paciente, id_medico, id_h_clinico, dt_atendimento)
     query = f"""INSERT INTO {'Prontuario'}(ID_Paciente, ID_Medico, ID_Historico_Clinico, Descricao, Data_Atendimento)
-    VALUES ('{values[0]}','{values[1]}','{values[2]}','{values[3]}') """
+    VALUES ('{values[0]}','{values[1]}','{values[2]}','{values[3]}'); """
     cursor.execute(query)
 
-# procura pacientes que tenham o nome informado e tem a possiblidade de mostrar mais 5 resultados
+# procura pacientes que tenham o nome informado e tem a possiblidade de mostrar mais 5 resultados se existir
 def find_paciente(cursor):
-    paciente_nome = input("nome do paciente: ")
-    query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('%{paciente_nome}%');"
+    nome = input("nome do paciente: ")
+    query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('%{nome}%');"
     cursor.execute(query)
+    question = 'S'
+    while question == 'S':
+        results = (cursor.fetchmany(5))
+        for c in results:
+            print(c, end='\n')
+        if results == []:
+            print('sem mais resultados.')
+            question = 'n'
+        question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
+
+# procura médicos que tenham o nome informado e com possibilidade de mostrar mais 5 resultados se existir
+def find_medico(cursor):
+    nome = input('nome do médico: ')
+    query = f"SELECT * FROM Medico WHERE LOWER(Nome) like LOWER('%{nome}%'"
     question = 'S'
     while question == 'S':
         results = (cursor.fetchmany(5))
