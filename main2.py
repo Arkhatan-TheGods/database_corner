@@ -7,7 +7,7 @@ from datetime import date, datetime
 os.system('cls')
 
 # cria conexão com o banco
-def connect_db(path_db:str):
+def connect_db(path_db:str) -> sqlite3.Connection :
     "this connect to db that you want, inform the: .db"
     #print('conectado.')
     try:
@@ -105,7 +105,7 @@ def find_paciente(cursor):
 # procura médicos que tenham o nome informado e com possibilidade de mostrar mais 5 resultados se existir
 def find_medico(cursor):
     nome = input('nome do médico: ')
-    query = f"SELECT * FROM Medico WHERE LOWER(Nome) like LOWER('%{nome}%'"
+    query = f"SELECT * FROM Medico WHERE LOWER(Nome) like LOWER('%{nome}%');"
     question = 'S'
     while question == 'S':
         results = (cursor.fetchmany(5))
@@ -163,6 +163,9 @@ conn = connect_db("Hospital.db")
 cur = conn.cursor()
 fk = cur.execute('PRAGMA foreign_keys = ON;')
 create_table_paciente(cursor=cur)
+create_table_medico(cursor=cur)
+create_table_historico_clinico(cursor=cur)
+create_table_prontuario(cursor=cur)
 conn_close(conn)
 
 while True:
@@ -172,7 +175,7 @@ while True:
             
             conn = connect_db("Hospital.db")
             cur = conn.cursor()
-            print("\nBem-Vindo ao controle de pacientes do hospital.")
+            print("\nBem-Vindo ao controle de registros do hospital.")
             main_menu()
             option = input("digite sua opção: ").strip()
             
@@ -206,6 +209,7 @@ while True:
 
         except Exception as ex:
             print(ex)
+            conn.rollback()
             
         finally:
             conn_close(conn)
