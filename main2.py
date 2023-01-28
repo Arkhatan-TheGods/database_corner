@@ -1,10 +1,10 @@
 import sqlite3
 from dotenv import dotenv_values
 from time import sleep
-import os
+from os import system
 from datetime import date, datetime
-
-os.system('cls')
+from crud_paciente import insert_values_into_paciente, find_paciente
+system('cls')
 
 # cria conexão com o banco
 def connect_db(path_db:str) -> sqlite3.Connection :
@@ -46,15 +46,15 @@ def create_table_prontuario(cursor):
     Descricao TEXT NOT NULL, Data_Atendimento TEXT NOT NULL""")
 
 # insere valores do paciente na tabela paciente dentro do banco
-def insert_values_into_paciente(cursor):
-    nome = input("nome do paciente: ")
-    cpf = input("CPF: ")
-    dt_nasc = input("Data de nascimento(xx/xx/xxxx): ")
-    endereco = input("Endereço: ")
-    values = (nome,cpf,dt_nasc,endereco)
-    query = f"""INSERT INTO {'Paciente'}({'Nome,CPF,Data_Nascimento,Endereco'})
-    VALUES('{values[0]}', '{values[1]}', '{values[2]}', '{values[3]}'); """
-    cursor.execute(query)
+# def insert_values_into_paciente(cursor):
+#     nome = input("nome do paciente: ")
+#     cpf = input("CPF: ")
+#     dt_nasc = input("Data de nascimento(xx/xx/xxxx): ")
+#     endereco = input("Endereço: ")
+#     values = (nome,cpf,dt_nasc,endereco)
+#     query = f"""INSERT INTO {'Paciente'}({'Nome,CPF,Data_Nascimento,Endereco'})
+#     VALUES('{values[0]}', '{values[1]}', '{values[2]}', '{values[3]}'); """
+#     cursor.execute(query)
 
 # insere valores do medico na tabela medico dentro do banco
 def insert_values_into_medico(cursor):
@@ -88,19 +88,19 @@ def insert_values_into_prontuario(cursor):
     cursor.execute(query)
 
 # procura pacientes que tenham o nome informado e tem a possiblidade de mostrar mais 5 resultados se existir
-def find_paciente(cursor):
-    nome = input("nome do paciente: ")
-    query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('%{nome}%');"
-    cursor.execute(query)
-    question = 'S'
-    while question == 'S':
-        results = (cursor.fetchmany(5))
-        for c in results:
-            print(c, end='\n')
-        if results == []:
-            print('sem mais resultados.')
-            question = 'n'
-        question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
+# def find_paciente(cursor):
+#     nome = input("nome do paciente: ")
+#     query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('%{nome}%');"
+#     cursor.execute(query)
+#     question = 'S'
+#     while question == 'S':
+#         results = (cursor.fetchmany(5))
+#         for c in results:
+#             print(c, end='\n')
+#         if results == []:
+#             print('sem mais resultados.')
+#             question = 'n'
+#         question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
 
 # procura médicos que tenham o nome informado e com possibilidade de mostrar mais 5 resultados se existir
 def find_medico(cursor):
@@ -193,18 +193,23 @@ if __name__ == "__main__":
             conn = connect_db("Hospital.db")
             cur = conn.cursor()
             print("\nBem-Vindo ao controle de registros do hospital.")
-            main_menu()
+            #main_menu()
+            options()
             option = input("digite sua opção: ").strip()
             
             if option == '1':
-                insert_values_into_paciente(cursor=cur)
-            
-            elif option == '2':
-                find_paciente(cursor=cur)
-             
-            elif option == '3':
-                update_paciente(cursor=cur)
+                sql = insert_values_into_paciente()
+                cur.execute(sql)
                 
+            elif option == '2':
+                pacientes = find_paciente(cursor=cur)
+                for c in pacientes:
+                    print(c)
+            
+            elif option == '3':
+                paciente = update_paciente(cursor=cur)
+                cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {int(ID)};")
+
             elif option == '4':
                 del_paciente(cursor=cur)
                 
