@@ -24,19 +24,27 @@ def find_paciente(cursor):
     return cursor.execute(query).fetchall()
 
 # atualiza registro do paciente a partir do ID que é fixo e único
-def update_paciente():
+def update_paciente(cursor):
 
-    consulta = input('consulta por paciente: \n[1] nome \n[2] CPF:').strip()
+    consulta = input('consulta por paciente: \n[1] Nome \n[2] CPF \nOpção:').strip()
 
     if consulta == '1':
         nome = input('nome: ').strip()
         query = f'SELECT * FROM Paciente WHERE Nome = "{nome}"; '
-        return cursor.execute(query).fetchone()
-        
+        result = cursor.execute(query).fetchone()
+        print(result)
+        if result != None:
+            column = input('informe o campo(nome, cpf, data_nascimento, endereco): ')
+            valor = input('novo valor: ')
+            cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE Nome = {nome};")
+
 
     elif consulta == '2':
         cpf = input('CPF: ').strip()
         query = f'SELECT * FROM Paciente WHERE CPF = {int(cpf)};'
-        return cursor.execute(query).fetchone()
-
-    
+        result = cursor.execute(query).fetchone()
+        print(result)
+        if result != None:
+            column = input('informe o campo(nome, cpf, data_nascimento, endereco): ')
+            valor = input('novo valor: ')
+            cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE Nome = {cpf};")

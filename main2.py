@@ -3,7 +3,7 @@ from dotenv import dotenv_values
 from time import sleep
 from os import system
 from datetime import date, datetime
-from crud_paciente import insert_values_into_paciente, find_paciente
+from crud_paciente import insert_values_into_paciente, find_paciente, update_paciente
 system('cls')
 
 # cria conexão com o banco
@@ -117,12 +117,12 @@ def find_medico(cursor):
         question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
 
 # atualiza registro do paciente a partir do ID que é fixo e único
-def update_paciente(cursor):
-    ID = input("Infome o ID do paciente: ")
-    column = input("Informe o campo a receber atualização:")
-    valor = input("o novo valor: ")
-    cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {int(ID)};")
-    print(f'o registro da coluna {column} foi atualizado para o novo valor {valor}.')
+# def update_paciente(cursor):
+#     ID = input("Infome o ID do paciente: ")
+#     column = input("Informe o campo a receber atualização:")
+#     valor = input("o novo valor: ")
+#     cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {int(ID)};")
+#     print(f'o registro da coluna {column} foi atualizado para o novo valor {valor}.')
 
 def update_medico(cursor):
     ID = input('Informe o ID do médico: ')
@@ -200,7 +200,7 @@ if __name__ == "__main__":
             if option == '1':
                 sql = insert_values_into_paciente()
                 cur.execute(sql)
-                
+
             elif option == '2':
                 pacientes = find_paciente(cursor=cur)
                 for c in pacientes:
@@ -208,7 +208,9 @@ if __name__ == "__main__":
             
             elif option == '3':
                 paciente = update_paciente(cursor=cur)
-                cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {int(ID)};")
+                for c in paciente:
+                    print(c)
+                  
 
             elif option == '4':
                 del_paciente(cursor=cur)
