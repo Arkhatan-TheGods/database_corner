@@ -164,11 +164,9 @@ def options():
 def show_all(cursor):
     cursor.execute('SELECT * FROM Paciente;')
     results = cursor.fetchall()
-    for d in results:
-        sleep(0.5)
-        print(d)
     if results == []:
         print('\nnenhum registro.')
+    return results
 
 # fecha a conexão com o banco
 def conn_close(conn):
@@ -208,15 +206,17 @@ if __name__ == "__main__":
             
             elif option == '3':
                 paciente = update_paciente(cursor=cur)
-                for c in paciente:
-                    print(c)
+                #for c in paciente:
+                #    print(c)
                   
 
             elif option == '4':
                 del_paciente(cursor=cur)
                 
             elif option == '5':
-                show_all(cursor=cur)
+               lista = show_all(cursor=cur)
+               for c in lista:
+                print(c)
 
             elif option == '6':
                 print('programa finalizado.')

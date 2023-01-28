@@ -20,31 +20,40 @@ def insert_values_into_paciente():
 # procura pacientes que tenham o nome informado e tem a possiblidade de mostrar mais 5 resultados se existir
 def find_paciente(cursor):
     nome = input("nome do paciente: ")
-    query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('{nome}%') LIMIT 5;"
+    query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('{nome}%') LIMIT 10;"
     return cursor.execute(query).fetchall()
 
 # atualiza registro do paciente a partir do ID que é fixo e único
 def update_paciente(cursor):
 
-    consulta = input('consulta por paciente: \n[1] Nome \n[2] CPF \nOpção:').strip()
+    while True:
 
-    if consulta == '1':
-        nome = input('nome: ').strip()
-        query = f'SELECT * FROM Paciente WHERE Nome = "{nome}"; '
-        result = cursor.execute(query).fetchone()
-        print(result)
-        if result != None:
-            column = input('informe o campo(nome, cpf, data_nascimento, endereco): ')
-            valor = input('novo valor: ')
-            cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE Nome = {nome};")
+        consulta = input('consulta por paciente: \n[1] Nome \n[2] CPF \n[3] Sair \nOpção:').strip()
+        if consulta == '1':
+            nome = input('nome: ').strip()
+            query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('{nome}%') LIMIT 10;"
+            result = cursor.execute(query).fetchall()
+            for c in result:
+                print(c)
+            atualizar = input('atualizar[s]: ').strip().lower()
+            # if atualizar == 's':
+            #     column = input('informe o campo(Nome, CPF, Data_Nascimento, Endereco): ')
+            #     valor = input('novo valor: ')
+            #     cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = '{}';")
+            #     break
 
-
-    elif consulta == '2':
-        cpf = input('CPF: ').strip()
-        query = f'SELECT * FROM Paciente WHERE CPF = {int(cpf)};'
-        result = cursor.execute(query).fetchone()
-        print(result)
-        if result != None:
-            column = input('informe o campo(nome, cpf, data_nascimento, endereco): ')
-            valor = input('novo valor: ')
-            cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE Nome = {cpf};")
+        elif consulta == '2':
+            cpf = input('CPF: ').strip()
+            query = f'SELECT * FROM Paciente WHERE CPF = {cpf};'
+            result = cursor.execute(query).fetchall()
+            print(result)
+            atualizar = input('atualizar[s]: ').strip().lower()
+            if atualizar == 's':
+                column = input('informe o campo(nome, cpf, data_nascimento, endereco): ')
+                valor = input('novo valor: ')
+                cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE CPF = '{cpf}';")
+                break
+        elif consulta == '3':
+            break
+        else:
+            print('inválido.')
