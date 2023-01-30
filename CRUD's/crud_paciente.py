@@ -28,7 +28,7 @@ def update_paciente(cursor):
 
     while True:
 
-        consulta = input('consulta por paciente: \n[1] Nome \n[2] CPF \n[3] atualizar por ID \n[4] Sair \nOpção:').strip()
+        consulta = input('consulta por paciente: \n[1] Nome \n[2] CPF \n[3] atualizar por ID \n[4] Voltar \nOpção:').strip()
         if consulta == '1':
             nome = input('nome: ').strip()
             query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER(':nome%') LIMIT 10;"
@@ -63,6 +63,7 @@ def update_paciente(cursor):
                 if column_endereco == 's':
                     endereco = input('novo endereço: ').strip().capitalize()
                     cursor.execute(f"UPDATE Paciente SET Endereco = :end WHERE ID = :id",(endereco,ID))
+                break
 
         elif consulta == '2':
             cpf = input('CPF: ').strip()
@@ -99,6 +100,7 @@ def update_paciente(cursor):
                 if column_endereco == 's':
                     endereco = input('novo endereço: ').strip().capitalize()
                     cursor.execute(f"UPDATE Paciente SET Endereco = :end WHERE ID = :id",(endereco,ID))
+                break
 
         elif consulta == '3':
 
@@ -128,6 +130,7 @@ def update_paciente(cursor):
                 if column_endereco == 's':
                     endereco = input('novo endereço: ').strip().capitalize()
                     cursor.execute(f"UPDATE Paciente SET Endereco = :end WHERE ID = :id",(endereco,ID))
+                break
 
         elif consulta == '4':
             break

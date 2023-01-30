@@ -24,10 +24,10 @@ def route_db():
     return path_db
 
 # cria tabela paciente no banco 
-def create_table_paciente(cursor):
-    query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
-    """.format("Paciente", "Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE, Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL ")
-    cursor.execute(query)
+# def create_table_paciente(cursor):
+#     query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
+#     """.format("Paciente", "Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE, Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL ")
+#     cursor.execute(query)
 
 # cria tabela medico no banco
 def create_table_medico(cursor):
