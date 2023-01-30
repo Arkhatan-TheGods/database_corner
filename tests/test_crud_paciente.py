@@ -29,8 +29,8 @@ def test_paciente2():
     cursor = connect.cursor()
     connect.set_trace_callback(print)
     
+    cursor.execute("CREATE TABLE IF NOT EXISTS Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);")
     cursor.execute('DROP TABLE Paciente;')
-    
     cursor.execute("""CREATE TABLE Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
      Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE,
         Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL);""")

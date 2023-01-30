@@ -14,10 +14,12 @@ def historico_clinico():
     cursor = connect.cursor()
     connect.set_trace_callback(print)
 
+    cursor.execute("CREATE TABLE IF NOT EXISTS Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);")
     cursor.execute('DROP TABLE Paciente ;')
     cursor.execute("CREATE TABLE Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Nome TEXT NOT NULL) ;")
     cursor.execute("INSERT INTO Paciente(Nome) VALUES('PAULO') ;")
     
+    cursor.execute("CREATE TABLE IF NOT EXISTS Historico_Clinico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);")
     cursor.execute('DROP TABLE Historico_Clinico ;')
     cursor.execute("""CREATE TABLE Historico_Clinico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         ID_Paciente INTEGER NOT NULL,Doenca TEXT NOT NULL, Alergia TEXT NOT NULL, Medicacao TEXT NOT NULL,
@@ -37,12 +39,14 @@ def historico_clinico2():
     cursor = connect.cursor()
     connect.set_trace_callback(print)
 
+    cursor.execute("CREATE TABLE IF NOT EXISTS Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);")
     cursor.execute('DROP TABLE Paciente ;')
-    cursor.execute("CREATE TABLE Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Nome TEXT NOT NULL) ;")
+    cursor.execute("CREATE TABLE IF NOT EXISTS Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Nome TEXT NOT NULL) ;")
     cursor.execute("INSERT INTO Paciente(Nome) VALUES('PAULO'),('JOSÉ') ;")
     
+    cursor.execute("CREATE TABLE IF NOT EXISTS Historico_Clinico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);")
     cursor.execute('DROP TABLE Historico_Clinico ;')
-    cursor.execute("""CREATE TABLE Historico_Clinico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    cursor.execute("""CREATE TABLE IF NOT EXISTS Historico_Clinico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         ID_Paciente INTEGER NOT NULL,Doenca TEXT NOT NULL, Alergia TEXT NOT NULL, Medicacao TEXT NOT NULL,
         FOREIGN KEY(ID_Paciente) REFERENCES Paciente(ID));
         """)

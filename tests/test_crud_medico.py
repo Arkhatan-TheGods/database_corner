@@ -13,8 +13,9 @@ def test_medico():
     connect = sqlite3.connect(test)
     cursor = connect.cursor()
     
+    cursor.execute("CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);")
     cursor.execute('DROP TABLE Medico ;')
-    cursor.execute("""CREATE TABLE Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    cursor.execute("""CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
      Nome TEXT NOT NULL, CRM TEXT NOT NULL UNIQUE);
     """)
     connect.commit()
@@ -31,8 +32,9 @@ def test_medico2():
     connect = sqlite3.connect(test)
     cursor = connect.cursor()
 
+    cursor.execute("CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);")
     cursor.execute('DROP TABLE Medico ;')
-    cursor.execute("""CREATE TABLE Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    cursor.execute("""CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     Nome TEXT NOT NULL, CRM TEXT NOT NULL UNIQUE);
     """)
     cursor.execute("INSERT INTO Medico(Nome, CRM) VALUES('Rodrigo','1234') ; ")
