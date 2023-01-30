@@ -31,101 +31,103 @@ def update_paciente(cursor):
         consulta = input('consulta por paciente: \n[1] Nome \n[2] CPF \n[3] atualizar por ID \n[4] Sair \nOpção:').strip()
         if consulta == '1':
             nome = input('nome: ').strip()
-            query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('{nome}%') LIMIT 10;"
-            result = cursor.execute(query).fetchall()
+            query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER(':nome%') LIMIT 10;"
+            result = cursor.execute(query,(nome,)).fetchall()
 
             for c in result:
                 print(c)
-
-            atualizar = input('digite s se deseja atualizar registro: ').strip().lower()
-            if atualizar == 's':
-                ID = int(input('informe o ID:'))
-                encontrado = cursor.execute(f'SELECT * FROM Paciente WHERE ID = {ID};').fetchone()
-                campo = int(input("""
-                [1] Nome
-                [2] CPF
-                [3] Data de Nascimento
-                [4] Endereço
-                Sua Opção: """).strip())
-                if campo == 1:
-                    valor = input('novo nome: ')
-                    cursor.execute(f"UPDATE Paciente SET Nome = '{valor}' WHERE ID = '{ID}';")
-
-                elif campo == 2:
-                    valor = input('Novo CPF:')
-                    cursor.execute(f"UPDATE Paciente SET CPF = '{valor}' WHERE ID = '{ID}';")
             
-                elif campo == 3:
-                    valor = input('nova Data de Nascimento(xx/xx/xxxx): ')
-                    cursor.execute(f"UPDATE Paciente SET Data_Nascimento = '{valor}' WHERE ID = '{ID}';")
-                    
-                elif campo == 4:
-                    valor = input('novo Endereço: ')
-                    cursor.execute(f"UPDATE Paciente SET Endereco = '{valor}' WHERE ID = '{ID}';")
+            atualizar = input('digite s se deseja atualizar: ').strip().lower()
+            if atualizar == 's':
+                ID = int(input('informe o ID: '))
+                objetive = cursor.execute(f'SELECT * FROM Paciente WHERE ID = :id ;', (ID,))
+                found = cursor.fetchone()
+                
+                print({found})
+                column_nome = input('atualizar nome?[s/n]: ').strip().lower()
+                if column_nome == 's':
+                    nome = input('novo nome: ').strip()
+                    cursor.execute(f"UPDATE Paciente SET Nome = :nome WHERE ID = :id ;",(nome,ID))
+                
+                column_cpf =input('atualizar CPF?[s/n]: ').strip()
+                if column_cpf == 's':
+                    cpf = input('novo CPF: ').strip()
+                    cursor.execute(f"UPDATE Paciente SET CPF = :cpf WHERE ID = :id ;", (cpf, ID))
 
+                column_data_nascimento = input('atualizar data de nascimento?[s/n]: ').strip().lower()
+                if column_data_nascimento == 's':
+                    dt_nascimento = input('nova data de nascimento(xx/xx/xxx): ')
+                    cursor.execute(f"UPDATE Paciente SET Data_Nascimento = :dt WHERE ID = :id",(dt_nascimento, ID))
+                
+                column_endereco = input('atualizar endereço?[s/n]: ').strip().lower()
+                if column_endereco == 's':
+                    endereco = input('novo endereço: ').strip().capitalize()
+                    cursor.execute(f"UPDATE Paciente SET Endereco = :end WHERE ID = :id",(endereco,ID))
 
         elif consulta == '2':
             cpf = input('CPF: ').strip()
-            query = f"SELECT * FROM Paciente WHERE CPF = '{cpf}' ; "
-            result = cursor.execute(query).fetchall()
+            query = f"SELECT * FROM Paciente WHERE CPF = :cpf LIMIT 10;"
+            result = cursor.execute(query,(cpf,)).fetchall()
 
             for c in result:
                 print(c)
-
-            atualizar = input('digite s se deseja atualizar registro: ').strip().lower()
-            if atualizar == 's':
-                ID = int(input('informe o ID:'))
-                encontrado = cursor.execute(f'SELECT * FROM Paciente WHERE ID = {ID};').fetchone()
-                campo = int(input("""
-                [1] Nome
-                [2] CPF
-                [3] Data de Nascimento
-                [4] Endereço
-                Sua Opção: """).strip())
-                if campo == 1:
-                    valor = input('novo nome: ')
-                    cursor.execute(f"UPDATE Paciente SET Nome = '{valor}' WHERE ID = '{ID}';")
-
-                elif campo == 2:
-                    valor = input('Novo CPF:')
-                    cursor.execute(f"UPDATE Paciente SET CPF = '{valor}' WHERE ID = '{ID}';")
             
-                elif campo == 3:
-                    valor = input('nova Data de Nascimento(xx/xx/xxxx): ')
-                    cursor.execute(f"UPDATE Paciente SET Data_Nascimento = '{valor}' WHERE ID = '{ID}';")
-                    
-                elif campo == 4:
-                    valor = input('novo Endereço: ')
-                    cursor.execute(f"UPDATE Paciente SET Endereco = '{valor}' WHERE ID = '{ID}';")
+            atualizar = input('digite s se deseja atualizar: ').strip().lower()
+            if atualizar == 's':
+                ID = int(input('informe o ID: '))
+                objetive = cursor.execute(f'SELECT * FROM Paciente WHERE ID = :id ;', (ID,))
+                found = cursor.fetchone()
+                
+                print({found})
+                column_nome = input('atualizar nome?[s/n]: ').strip().lower()
+                if column_nome == 's':
+                    nome = input('novo nome: ').strip()
+                    cursor.execute(f"UPDATE Paciente SET Nome = :nome WHERE ID = :id ;",(nome,ID))
+                
+                column_cpf =input('atualizar CPF?[s/n]: ').strip()
+                if column_cpf == 's':
+                    cpf = input('novo CPF: ').strip()
+                    cursor.execute(f"UPDATE Paciente SET CPF = :cpf WHERE ID = :id ;", (cpf, ID))
 
+
+                column_data_nascimento = input('atualizar data de nascimento?[s/n]: ').strip().lower()
+                if column_data_nascimento == 's':
+                    dt_nascimento = input('nova data de nascimento(xx/xx/xxx): ')
+                    cursor.execute(f"UPDATE Paciente SET Data_Nascimento = :dt WHERE ID = :id",(dt_nascimento, ID))
+                
+                column_endereco = input('atualizar endereço?[s/n]: ').strip().lower()
+                if column_endereco == 's':
+                    endereco = input('novo endereço: ').strip().capitalize()
+                    cursor.execute(f"UPDATE Paciente SET Endereco = :end WHERE ID = :id",(endereco,ID))
 
         elif consulta == '3':
-            atualizar = 's'
-            if atualizar == 's':
-                ID = int(input('informe o ID:'))
-                encontrado = cursor.execute(f'SELECT * FROM Paciente WHERE ID = {ID};').fetchone()
-                campo = int(input("""
-                [1] Nome
-                [2] CPF
-                [3] Data de Nascimento
-                [4] Endereço
-                Sua Opção: """).strip())
-                if campo == 1:
-                    valor = input('novo nome: ')
-                    cursor.execute(f"UPDATE Paciente SET Nome = '{valor}' WHERE ID = '{ID}';")
 
-                elif campo == 2:
-                    valor = input('Novo CPF:')
-                    cursor.execute(f"UPDATE Paciente SET CPF = '{valor}' WHERE ID = '{ID}';")
-            
-                elif campo == 3:
-                    valor = input('nova Data de Nascimento(xx/xx/xxxx): ')
-                    cursor.execute(f"UPDATE Paciente SET Data_Nascimento = '{valor}' WHERE ID = '{ID}';")
-                    
-                elif campo == 4:
-                    valor = input('novo Endereço: ')
-                    cursor.execute(f"UPDATE Paciente SET Endereco = '{valor}' WHERE ID = '{ID}';")
-                    
+            atualizar = input('digite s se deseja atualizar: ').strip().lower()
+            if atualizar == 's':
+                ID = int(input('informe o ID: '))
+                objetive = cursor.execute(f'SELECT * FROM Paciente WHERE ID = :id ;', (ID,))
+                found = cursor.fetchone()
+                
+                print({found})
+                column_nome = input('atualizar nome?[s/n]: ').strip().lower()
+                if column_nome == 's':
+                    nome = input('novo nome: ').strip()
+                    cursor.execute(f"UPDATE Paciente SET Nome = :nome WHERE ID = :id ;",(nome,ID))
+                
+                column_cpf =input('atualizar CPF?[s/n]: ').strip()
+                if column_cpf == 's':
+                    cpf = input('novo CPF: ').strip()
+                    cursor.execute(f"UPDATE Paciente SET CPF = :cpf WHERE ID = :id ;", (cpf, ID))
+
+                column_data_nascimento = input('atualizar data de nascimento?[s/n]: ').strip().lower()
+                if column_data_nascimento == 's':
+                    dt_nascimento = input('nova data de nascimento(xx/xx/xxx): ')
+                    cursor.execute(f"UPDATE Paciente SET Data_Nascimento = :dt WHERE ID = :id",(dt_nascimento, ID))
+                
+                column_endereco = input('atualizar endereço?[s/n]: ').strip().lower()
+                if column_endereco == 's':
+                    endereco = input('novo endereço: ').strip().capitalize()
+                    cursor.execute(f"UPDATE Paciente SET Endereco = :end WHERE ID = :id",(endereco,ID))
 
         elif consulta == '4':
             break

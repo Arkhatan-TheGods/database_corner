@@ -3,7 +3,8 @@ from dotenv import dotenv_values
 from time import sleep
 from os import system
 from datetime import date, datetime
-from crud_paciente import insert_values_into_paciente, find_paciente, update_paciente
+from crud_paciente import insert_values_into_paciente, find_paciente
+from crud_paciente2 import update_paciente
 system('cls')
 
 # cria conexão com o banco
@@ -45,17 +46,6 @@ def create_table_prontuario(cursor):
     """.format('Prontuario',"""ID_Paciente INTEGER NOT NULL, ID_Medico INTEGER NOT NULL, ID_Historico_Clinico INTEGER NOT NULL,
     Descricao TEXT NOT NULL, Data_Atendimento TEXT NOT NULL""")
 
-# insere valores do paciente na tabela paciente dentro do banco
-# def insert_values_into_paciente(cursor):
-#     nome = input("nome do paciente: ")
-#     cpf = input("CPF: ")
-#     dt_nasc = input("Data de nascimento(xx/xx/xxxx): ")
-#     endereco = input("Endereço: ")
-#     values = (nome,cpf,dt_nasc,endereco)
-#     query = f"""INSERT INTO {'Paciente'}({'Nome,CPF,Data_Nascimento,Endereco'})
-#     VALUES('{values[0]}', '{values[1]}', '{values[2]}', '{values[3]}'); """
-#     cursor.execute(query)
-
 # insere valores do medico na tabela medico dentro do banco
 def insert_values_into_medico(cursor):
     nome = input("nome do médico: ")
@@ -87,21 +77,6 @@ def insert_values_into_prontuario(cursor):
     VALUES ('{values[0]}','{values[1]}','{values[2]}','{values[3]}'); """
     cursor.execute(query)
 
-# procura pacientes que tenham o nome informado e tem a possiblidade de mostrar mais 5 resultados se existir
-# def find_paciente(cursor):
-#     nome = input("nome do paciente: ")
-#     query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('%{nome}%');"
-#     cursor.execute(query)
-#     question = 'S'
-#     while question == 'S':
-#         results = (cursor.fetchmany(5))
-#         for c in results:
-#             print(c, end='\n')
-#         if results == []:
-#             print('sem mais resultados.')
-#             question = 'n'
-#         question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
-
 # procura médicos que tenham o nome informado e com possibilidade de mostrar mais 5 resultados se existir
 def find_medico(cursor):
     nome = input('nome do médico: ')
@@ -115,14 +90,6 @@ def find_medico(cursor):
             print('sem mais resultados.')
             question = 'n'
         question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
-
-# atualiza registro do paciente a partir do ID que é fixo e único
-# def update_paciente(cursor):
-#     ID = input("Infome o ID do paciente: ")
-#     column = input("Informe o campo a receber atualização:")
-#     valor = input("o novo valor: ")
-#     cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {int(ID)};")
-#     print(f'o registro da coluna {column} foi atualizado para o novo valor {valor}.')
 
 def update_medico(cursor):
     ID = input('Informe o ID do médico: ')
@@ -138,7 +105,7 @@ def del_paciente(cursor):
     print('seguinte registro foi deletado: \n',cursor.fetchone())
     cursor.execute(f"DELETE FROM Paciente WHERE ID = {ID}; ")
 
-# 
+# mostra tabelas disponíveis
 def main_menu():
     menu = """
     1 - acessar registro de pacientes
@@ -148,7 +115,7 @@ def main_menu():
     """
     print(menu)
 
-# mostra as opções disponíveis
+# mostra as operações disponíveis
 def options():
     menu = """
     1 - criar registro na tabela
@@ -160,7 +127,7 @@ def options():
     """
     print(menu)
 
-# mostra todos os valores da tabela paciente
+# mostra todos os valores da tabela 
 def show_all(cursor):
     cursor.execute('SELECT * FROM Paciente;')
     results = cursor.fetchall()
