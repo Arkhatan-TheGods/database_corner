@@ -11,10 +11,13 @@ def test_paciente():
     test = config.get('teste')
     connect = sqlite3.connect(test)
     cursor = connect.cursor()
-    cursor.execute('DROP TABLE Paciente;')
-    cursor.execute("""CREATE TABLE {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
-    """.format("Paciente", """Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE,
-        Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL """))
+    cursor.executescript("""
+    BEGIN;
+    DROP TABLE Paciente;
+    CREATE TABLE Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+        Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE,
+        Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL);
+    COMMIT;""")
     connect.commit()
     connect.set_trace_callback(print)
     yield connect, cursor
@@ -29,14 +32,16 @@ def test_paciente2():
     cursor = connect.cursor()
     connect.set_trace_callback(print)
     
-    cursor.execute("CREATE TABLE IF NOT EXISTS Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);")
-    cursor.execute('DROP TABLE Paciente;')
-    cursor.execute("""CREATE TABLE Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    cursor.executescript("""
+    BEGIN;
+    CREATE TABLE IF NOT EXISTS Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);
+    DROP TABLE Paciente;
+    CREATE TABLE Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
      Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE,
-        Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL);""")
-    
-    cursor.execute(f"""INSERT INTO Paciente(Nome, CPF, Data_Nascimento, Endereco)
-    VALUES('Paulo','12345','97','SÃO PAULO'); """)
+        Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL);
+    INSERT INTO Paciente(Nome, CPF, Data_Nascimento, Endereco)
+    VALUES('Paulo','12345','97','SÃO PAULO');
+    COMMIT;""")
     
     connect.commit()
     yield connect, cursor

@@ -13,10 +13,13 @@ def test_medico():
     connect = sqlite3.connect(test)
     cursor = connect.cursor()
     
-    cursor.execute("CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);")
-    cursor.execute('DROP TABLE Medico ;')
-    cursor.execute("""CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-     Nome TEXT NOT NULL, CRM TEXT NOT NULL UNIQUE);
+    cursor.executescript("""
+    BEGIN;
+    CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);
+    DROP TABLE Medico ;
+    CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    Nome TEXT NOT NULL, CRM TEXT NOT NULL UNIQUE);
+    COMMIT;
     """)
     connect.commit()
     connect.set_trace_callback(print)
@@ -32,12 +35,15 @@ def test_medico2():
     connect = sqlite3.connect(test)
     cursor = connect.cursor()
 
-    cursor.execute("CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);")
-    cursor.execute('DROP TABLE Medico ;')
-    cursor.execute("""CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    cursor.executescript("""
+    BEGIN; 
+    CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);
+    DROP TABLE Medico ;
+    CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     Nome TEXT NOT NULL, CRM TEXT NOT NULL UNIQUE);
+    INSERT INTO Medico(Nome, CRM) VALUES('Rodrigo','1234') ;
+    COMMIT ;
     """)
-    cursor.execute("INSERT INTO Medico(Nome, CRM) VALUES('Rodrigo','1234') ; ")
     
     connect.commit()
     connect.set_trace_callback(print)

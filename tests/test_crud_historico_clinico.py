@@ -39,20 +39,21 @@ def historico_clinico2():
     cursor = connect.cursor()
     connect.set_trace_callback(print)
 
-    cursor.execute("CREATE TABLE IF NOT EXISTS Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);")
-    cursor.execute('DROP TABLE Paciente ;')
-    cursor.execute("CREATE TABLE IF NOT EXISTS Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Nome TEXT NOT NULL) ;")
-    cursor.execute("INSERT INTO Paciente(Nome) VALUES('PAULO'),('JOSÉ') ;")
-    
-    cursor.execute("CREATE TABLE IF NOT EXISTS Historico_Clinico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);")
-    cursor.execute('DROP TABLE Historico_Clinico ;')
-    cursor.execute("""CREATE TABLE IF NOT EXISTS Historico_Clinico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    cursor.executescript("""
+    BEGIN;
+    CREATE TABLE IF NOT EXISTS Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);
+    DROP TABLE Paciente ;
+    CREATE TABLE IF NOT EXISTS Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Nome TEXT NOT NULL) ;
+    INSERT INTO Paciente(Nome) VALUES('PAULO'),('JOSÉ') ;
+    CREATE TABLE IF NOT EXISTS Historico_Clinico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL);
+    DROP TABLE Historico_Clinico ;
+    CREATE TABLE IF NOT EXISTS Historico_Clinico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         ID_Paciente INTEGER NOT NULL,Doenca TEXT NOT NULL, Alergia TEXT NOT NULL, Medicacao TEXT NOT NULL,
         FOREIGN KEY(ID_Paciente) REFERENCES Paciente(ID));
-        """)
-    cursor.execute("""INSERT INTO Historico_Clinico(ID_Paciente, Doenca, Alergia, Medicacao)
-        VALUES(1, 'cancer', 'lactose', 'dipirona') ;""")
-
+    INSERT INTO Historico_Clinico(ID_Paciente, Doenca, Alergia, Medicacao)
+        VALUES(1, 'cancer', 'lactose', 'dipirona') ;  
+    COMMIT; """)
+    
     connect.commit()
     yield connect, cursor
     connect.close()
