@@ -4,8 +4,6 @@ from os import system
 
 system('cls')
 
-
-
 @pytest.fixture(scope="session")
 def setup():
     connect = sqlite3.connect("teste_hospital.db")

@@ -23,29 +23,6 @@ def route_db():
     path_db = config.get('hospital')
     return path_db
 
-# cria tabela paciente no banco 
-# def create_table_paciente(cursor):
-#     query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
-#     """.format("Paciente", "Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE, Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL ")
-#     cursor.execute(query)
-
-# cria tabela medico no banco
-def create_table_medico(cursor):
-    query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
-    """.format('Medico','Nome TEXT NOT NULL, CRM TEXT NOT NULL UNIQUE')
-
-# cria tabela historico clinico no banco
-def create_table_historico_clinico(cursor):
-    query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
-    """.format('Historico_Clinico',"""ID_Paciente INTEGER NOT NULL,Doenca TEXT NOT NULL, Alergia TEXT NOT NULL, Medicacao TEXT NOT NULL,
-    FOREIGN KEY(ID_Paciente) REFERENCES Paciente(ID)""")
-
-# cria tabela prontuario no banco
-def create_table_prontuario(cursor):
-    query = """CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
-    """.format('Prontuario',"""ID_Paciente INTEGER NOT NULL, ID_Medico INTEGER NOT NULL, ID_Historico_Clinico INTEGER NOT NULL,
-    Descricao TEXT NOT NULL, Data_Atendimento TEXT NOT NULL""")
-
 # insere valores do medico na tabela medico dentro do banco
 def insert_values_into_medico(cursor):
     nome = input("nome do médico: ")
