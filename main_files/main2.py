@@ -75,13 +75,6 @@ def update_medico(cursor):
     cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {int(ID)};")
     print(f'o registro da coluna {column} foi atualizado para o novo valor {valor}.')
 
-# deleta registro do paciente permanentemente
-def del_paciente(cursor):
-    ID = int(input('informe o ID a ser deletado: '))
-    cursor.execute(f'SELECT * FROM Paciente WHERE ID = {ID};')
-    print('seguinte registro foi deletado: \n',cursor.fetchone())
-    cursor.execute(f"DELETE FROM Paciente WHERE ID = {ID}; ")
-
 # mostra tabelas disponíveis
 def main_menu():
     menu = """

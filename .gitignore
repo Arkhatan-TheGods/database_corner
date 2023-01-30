@@ -6,3 +6,7 @@ Hospital.db
 main3.py
 __pycache__/
 crud_paciente2.py
+.vscode/
+tests/teste_hospital.db
+teste_hospital.db
+CRUDS/crud_medico2.py

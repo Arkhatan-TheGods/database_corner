@@ -134,3 +134,9 @@ def update_paciente(cursor):
 
         elif consulta == '4':
             break
+
+def del_paciente(cursor):
+    ID = int(input('informe o ID a ser deletado: '))
+    cursor.execute(f'SELECT * FROM Paciente WHERE ID = :id ;', (ID,))
+    print('seguinte registro foi deletado: \n',cursor.fetchone())
+    cursor.execute(f"DELETE FROM Paciente WHERE ID = :id ;", (ID,))
