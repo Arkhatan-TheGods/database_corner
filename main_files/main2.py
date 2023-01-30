@@ -3,8 +3,8 @@ from dotenv import dotenv_values
 from time import sleep
 from os import system
 from datetime import date, datetime
-from crud_paciente import insert_values_into_paciente, find_paciente
-from crud_paciente2 import update_paciente
+from crud_paciente import create_table_paciente, insert_values_into_paciente, find_paciente, update_paciente, delete_paciente
+
 system('cls')
 
 # cria conexão com o banco

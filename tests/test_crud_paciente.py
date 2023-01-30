@@ -12,7 +12,7 @@ def test_paciente():
     connect = sqlite3.connect(test)
     cursor = connect.cursor()
     cursor.execute('DROP TABLE Paciente;')
-    cursor.execute("""CREATE TABLE IF NOT EXISTS {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
+    cursor.execute("""CREATE TABLE {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
     """.format("Paciente", """Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE,
         Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL """))
     connect.set_trace_callback(print)
@@ -30,7 +30,7 @@ def test_paciente2():
     
     cursor.execute('DROP TABLE Paciente;')
     
-    cursor.execute("""CREATE TABLE IF NOT EXISTS Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    cursor.execute("""CREATE TABLE Paciente(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
      Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE,
         Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL);""")
     
@@ -52,6 +52,11 @@ def test_insert_paciente(test_paciente):
 def test_find_paciente(test_paciente2):
     connect, cursor = test_paciente2
     cursor.execute("SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER('Paulo%'); ")
+    assert cursor.fetchone()[1][0:5] == 'Paulo'
+
+def test_find_paciente_by_cpf(test_paciente2):
+    connect, cursor = test_paciente2
+    cursor.execute("SELECT * FROM Paciente WHERE CPF = '12345' ;")
     assert cursor.fetchone()[1][0:5] == 'Paulo'
 
 def test_update_nome_paciente(test_paciente2):
@@ -81,7 +86,7 @@ def test_update_endereco_paciente(test_paciente2):
 def test_delete_paciente(test_paciente2):
     connect, cursor = test_paciente2
     ID = 1
-    cursor.execute(f'SELECT * FROM Paciente WHERE ID = :id ;', (ID,))
+    cursor.execute('SELECT * FROM Paciente WHERE ID = :id ;', (ID,))
     print('seguinte registro foi deletado: \n',cursor.fetchone())
-    cursor.execute(f"DELETE FROM Paciente WHERE ID = :id ;", (ID,))
+    cursor.execute("DELETE FROM Paciente WHERE ID = :id ;", (ID,))
     assert cursor.fetchone() == None
