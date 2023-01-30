@@ -79,12 +79,12 @@ def test_find_historico_clinico_by_doenca(historico_clinico2):
 def test_find_historico_clinico_by_alergia(historico_clinico2):
     connect, cursor = historico_clinico2
     cursor.execute("SELECT * FROM Historico_Clinico WHERE Alergia = 'lactose' ;")
-    assert cursor.fetchone()[2] == 'lactose'
+    assert cursor.fetchone()[3] == 'lactose'
 
 def test_find_historico_clinico_by_medicacao(historico_clinico2):
     connect, cursor = historico_clinico2
     cursor.execute("SELECT * FROM Historico_Clinico WHERE Medicacao = 'dipirona' ;")
-    assert cursor.fetchone()[3] == 'dipirona'
+    assert cursor.fetchone()[4] == 'dipirona'
     
 def test_update_id_paciente(historico_clinico2):
     connect, cursor = historico_clinico2
