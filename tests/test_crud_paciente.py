@@ -15,6 +15,7 @@ def test_paciente():
     cursor.execute("""CREATE TABLE {}(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, {});
     """.format("Paciente", """Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE,
         Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL """))
+    connect.commit()
     connect.set_trace_callback(print)
     yield connect, cursor
     connect.close()
@@ -45,7 +46,6 @@ def test_insert_paciente(test_paciente):
     connect, cursor = test_paciente
     cursor.execute(f"""INSERT INTO Paciente(Nome, CPF, Data_Nascimento, Endereco)
     VALUES('Paulo','12345','97','SÃO PAULO'); """)
-    connect.commit()
     cursor.execute(f"""SELECT * FROM Paciente WHERE Nome = 'Paulo' ;""")
     assert cursor.fetchone()[1][0:5] == 'Paulo'
 
@@ -57,7 +57,17 @@ def test_find_paciente(test_paciente2):
 def test_find_paciente_by_cpf(test_paciente2):
     connect, cursor = test_paciente2
     cursor.execute("SELECT * FROM Paciente WHERE CPF = '12345' ;")
-    assert cursor.fetchone()[1][0:5] == 'Paulo'
+    assert cursor.fetchone()[2][0:5] == '12345'
+
+def test_find_paciente_by_data_nascimento(test_paciente2):
+    connect, cursor = test_paciente2
+    cursor.execute("SELECT * FROM Paciente WHERE Data_Nascimento = '97' ;")
+    assert cursor.fetchone()[3] == '97'
+
+def test_find_paciente_by_endereco(test_paciente2):
+    connect, cursor = test_paciente2
+    cursor.execute("SELECT * FROM Paciente WHERE Endereco = 'SÃO PAULO' ;")
+    assert cursor.fetchone()[4] == 'SÃO PAULO'
 
 def test_update_nome_paciente(test_paciente2):
     connect, cursor = test_paciente2
