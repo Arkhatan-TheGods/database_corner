@@ -10,3 +10,4 @@ crud_paciente2.py
 tests/teste_hospital.db
 teste_hospital.db
 CRUDS/crud_medico2.py
+.pytest_cache/
