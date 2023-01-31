@@ -3,7 +3,7 @@ from dotenv import dotenv_values
 from time import sleep
 from os import system
 from datetime import date, datetime
-from crud_paciente import create_table_paciente, insert_values_into_paciente, find_paciente, update_paciente, delete_paciente
+import CRUDS.crud_paciente as cp 
 
 system('cls')
 
@@ -116,10 +116,10 @@ if __name__ == "__main__":
     conn = connect_db("Hospital.db")
     cur = conn.cursor()
     fk = cur.execute('PRAGMA foreign_keys = ON;')
-    create_table_paciente(cursor=cur)
-    create_table_medico(cursor=cur)
-    create_table_historico_clinico(cursor=cur)
-    create_table_prontuario(cursor=cur)
+    cur.execute(cp.create_table_paciente())
+    #create_table_medico(cursor=cur)
+    #create_table_historico_clinico(cursor=cur)
+    #create_table_prontuario(cursor=cur)
     conn_close(conn)
 
     while True:        
@@ -133,22 +133,22 @@ if __name__ == "__main__":
             option = input("digite sua opção: ").strip()
             
             if option == '1':
-                sql = insert_values_into_paciente()
+                sql = cp.insert_values_into_paciente()
                 cur.execute(sql)
 
             elif option == '2':
-                pacientes = find_paciente(cursor=cur)
+                pacientes = cp.find_paciente(cursor=cur)
                 for c in pacientes:
                     print(c)
             
             elif option == '3':
-                paciente = update_paciente(cursor=cur)
+                paciente = cp.update_paciente(cursor=cur)
                 #for c in paciente:
                 #    print(c)
                   
 
             elif option == '4':
-                del_paciente(cursor=cur)
+                cp.del_paciente(cursor=cur)
                 
             elif option == '5':
                lista = show_all(cursor=cur)
