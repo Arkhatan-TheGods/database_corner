@@ -97,7 +97,7 @@ def options():
     """
     print(menu)
 
-# mostra todos os valores da tabela 
+# mostra todos os valores da tabela paciente
 def show_all(cursor):
     cursor.execute('SELECT * FROM Paciente;')
     results = cursor.fetchall()
@@ -122,7 +122,7 @@ if __name__ == "__main__":
     #create_table_prontuario(cursor=cur)
     conn_close(conn)
 
-    while True:        
+    while True:
         try:
             
             conn = connect_db("Hospital.db")
