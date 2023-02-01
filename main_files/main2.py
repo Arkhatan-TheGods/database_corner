@@ -133,8 +133,8 @@ if __name__ == "__main__":
             option = input("digite sua opção: ").strip()
             
             if option == '1':
-                sql = cp.insert_values_into_paciente()
-                cur.execute(sql)
+                 cp.insert_values_into_paciente(cursor=cur)
+                
 
             elif option == '2':
                 pacientes = cp.find_paciente(cursor=cur)
