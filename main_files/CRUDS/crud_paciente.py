@@ -6,15 +6,27 @@ def create_table_paciente():
     Nome TEXT NOT NULL, CPF TEXT NOT NULL UNIQUE, Data_Nascimento TEXT NOT NULL, Endereco TEXT NOT NULL);
     """
 
-# insere valores do paciente na tabela paciente dentro do banco
-def insert_values_into_paciente(cursor):
+def values_paciente():
     nome = input("nome do paciente: ")
     cpf = input("CPF: ")
     dt_nasc = input("Data de nascimento(xx/xx/xxxx): ")
     endereco = input("Endereço: ")
-    cursor.execute("""INSERT INTO Paciente(Nome,CPF,Data_Nascimento,Endereco)
-    VALUES( :nome ,  :cpf ,  :nasc , :endereco ); """,(nome,cpf,dt_nasc,endereco))
-    print("paciente inserido.")
+    return nome, cpf, dt_nasc, endereco 
+
+def query_step_insert():
+    return """INSERT INTO Paciente(Nome, CPF, Data_Nascimento, Endereco) 
+    VALUES(:nome, :cpf, :dt_nasc, :endereco); """
+
+def query_step_insert() -> str:
+    return """INSERT INTO Paciente(Nome, CPF, Data_Nascimento, Endereco) 
+    VALUES(:nome, :cpf, :dt_nasc, :endereco); """
+
+def query_step_find() -> str:
+    return """SELECT * FROM Paciente WHERE LOWE(Nome) = LOWER(:nome%) LIMIT 10 ;"""
+
+def query_step_update() -> str:
+    return """UPDATE Paciente SET Nome = : nome, CPF = :cpf, Data_Nascimento = :dt_nasc, Endereco = :end WHERE ID = :id ;"""
+
 
 # procura pacientes que tenham o nome informado e tem a possiblidade de mostrar mais 5 resultados se existir
 def find_paciente(cursor):
@@ -46,7 +58,8 @@ def update_paciente(cursor):
                 column_nome = input('atualizar nome?[s/n]: ').strip().lower()
                 if column_nome == 's':
                     nome = input('novo nome: ').strip()
-                    cursor.execute(f"UPDATE Paciente SET Nome = :nome WHERE ID = :id ;",(nome,ID))
+                    
+                    #cursor.execute(f"UPDATE Paciente SET Nome = :nome WHERE ID = :id ;",(nome,ID))
                 
                 column_cpf =input('atualizar CPF?[s/n]: ').strip()
                 if column_cpf == 's':
@@ -129,6 +142,8 @@ def update_paciente(cursor):
                 if column_endereco == 's':
                     endereco = input('novo endereço: ').strip().capitalize()
                     cursor.execute(f"UPDATE Paciente SET Endereco = :end WHERE ID = :id",(endereco,ID))
+                
+                cursor.execute((nome,ID))
                 break
 
         elif consulta == '4':

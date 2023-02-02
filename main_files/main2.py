@@ -3,7 +3,7 @@ from dotenv import dotenv_values
 from time import sleep
 from os import system
 from datetime import date, datetime
-import CRUDS.crud_paciente as cp 
+import CRUDS.crud_paciente as cp
 
 system('cls')
 
@@ -133,8 +133,8 @@ if __name__ == "__main__":
             option = input("digite sua opção: ").strip()
             
             if option == '1':
-                 cp.insert_values_into_paciente(cursor=cur)
-                
+                #cp.insert_values_into_paciente(cursor=cur)
+                cur.execute(cp.query_step_insert(),cp.values_paciente())
 
             elif option == '2':
                 pacientes = cp.find_paciente(cursor=cur)
