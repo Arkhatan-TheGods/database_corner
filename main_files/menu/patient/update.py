@@ -1,6 +1,14 @@
 from main_files.CRUDS.crud_paciente import query_step_update
 
 
+class Patient:
+    def __init__(self, nome, cpf, dt_nascimento, endereco) -> None:
+        self.nome = nome
+        self.cpf = cpf
+        self.dt_nascimento = dt_nascimento
+        self.endereco = endereco
+
+
 def get_values():
     column_nome = input(
         'atualizar nome?[s/n]: ').strip().lower()
@@ -42,9 +50,19 @@ def update_paciente(cursor):
             result = cursor.execute(
                 query, (nome,)).fetchall()
 
-            for c in result:
-                print(c)
+            while result == None:
+                nome = input('nome: ').strip()
+                query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER(':nome%') LIMIT 10;"
+                result = cursor.execute(
+                    query, (nome,)).fetchall()
 
+
+
+            for c in result:
+                print(f"ID: {C[0]} Nome: {c[1]} CPF: {c[2]} Data Nascimento: {c[3]} Endereço: {c[4]}")
+            
+            ID = int(input('informe o ID a ser atualizado:'))
+            cursor.execute('SELECT * FROM PACIENTE WHERE ID = :ID ;', (ID,))
             nome, cpf, dt_nascimento, endereco = get_values()
 
             nome = nome if nome else found[1]
@@ -59,11 +77,8 @@ def update_paciente(cursor):
         elif consulta == '2':
             cpf = input('CPF: ').strip()
             query = f"SELECT * FROM Paciente WHERE CPF = :cpf LIMIT 10;"
-            result = cursor.execute(
-                query, (cpf,)).fetchall()
+            result = cursor.execute(query, (cpf,)).fetchone()
 
-            for c in result:
-                print(c)
 
             nome = nome if nome else found[1]
             cpf = cpf if cfp else found[2]
