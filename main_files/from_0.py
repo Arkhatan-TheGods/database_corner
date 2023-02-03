@@ -55,12 +55,10 @@ if __name__ == "__main__":
                         values = patient_operation.values_patient()
                         cur.execute(
                             patient.query_insert_patient(), values)
-                        novo = input(
-                            'deseja adicionar novo valor [s/n]?').strip().lower()[0]
+                        novo = input('deseja adicionar novo valor [s/n]?').strip().lower()[0]
 
                 elif option == '2':
-                    patient_operation.update_paciente(
-                        cursor=cur)
+                    patient_operation.update_paciente(cursor=cur)
                 elif option == '3':
                     pass
                 elif option == '4':

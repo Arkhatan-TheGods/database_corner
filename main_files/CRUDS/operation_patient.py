@@ -1,5 +1,5 @@
 from sqlite3 import Cursor
-
+import query_patient as patient
 
 class Patient():
     def __init__(self, id_, nome, cpf, dt_nascimento, endereco):
@@ -9,8 +9,8 @@ class Patient():
         self.dt_nascimento = dt_nascimento
         self.endereco = endereco
 
-
-def values_patient():
+#get values to use with insert on the table patient
+def values_patient() -> tuple:
     nome = input("nome do paciente: ")
     cpf = input("CPF: ")
     dt_nasc = input(
@@ -19,8 +19,6 @@ def values_patient():
     return nome, cpf, dt_nasc, endereco
 
 # atualiza registro do paciente a partir do ID que é fixo e único
-
-
 def update_paciente(cursor):
 
     while True:
@@ -30,9 +28,7 @@ def update_paciente(cursor):
         if consulta == '1':
 
             nome = input('nome: ').strip()
-            query = f"SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER(:nome) LIMIT 10;"
-            result = cursor.execute(
-                query, (f"{nome}%",)).fetchall()
+            result = cursor.execute(patient.query_find_patient_by_name(), (f"{nome}%",)).fetchall()
 
             for c in result:
                 print(c)
