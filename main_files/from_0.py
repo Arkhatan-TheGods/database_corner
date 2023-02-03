@@ -6,7 +6,7 @@ import CRUDS.query_doctor as doctor
 import CRUDS.query_historic_clinic as historic
 import CRUDS.query_medical_record as record
 import CRUDS.operation_patient as patient_operation
-
+import traceback
 system('cls')
 
 
@@ -126,8 +126,9 @@ if __name__ == "__main__":
             conn.commit()
 
         except Exception as ex:
+
             conn.rollback()
-            print(ex)
+            print(traceback.format_exc())
 
         finally:
             conn_close(conn)
