@@ -58,7 +58,7 @@ def new_values(patient: Patient) -> "class":
     return patient
 
 
-def insert_new_values(ID):
+def insert_new_values(ID, cursor):
     patient = Patient(*cursor.execute(patient_query.query_find_patient_by_id(), (ID,)).fetchone())
 
     values = new_values(patient)
@@ -91,13 +91,7 @@ def update_paciente(cursor):
 
                     ID = int(input("informe o ID: "))
 
-                    patient = Patient(*cursor.execute(patient_query.query_find_patient_by_id(), (ID,)).fetchone())
-
-                    values = new_values(patient)
-
-                    cursor.execute(patient_query.query_update_patient_by_id(), (values.nome,
-                                   values.cpf, values.dt_nascimento, values.endereco, values.id))
-
+                    insert_new_values(ID,cursor)
             else:
 
                 print('sem resultados.')
@@ -116,13 +110,7 @@ def update_paciente(cursor):
 
                     ID = input("informe o ID: ")
 
-                    patient = Patient(*cursor.execute(patient_query.query_find_patient_by_id(), (ID,)).fetchone())
-
-                    values = new_values(patient)
-
-                    cursor.execute(patient_query.query_update_patient_by_id(), (values.nome,
-                                                                                values.cpf, values.dt_nascimento, values.endereco, values.id))
-
+                    insert_new_values(ID,cursor)
             else:
 
                 print('sem resultados.')
@@ -131,14 +119,7 @@ def update_paciente(cursor):
 
             ID = int(input("informe o ID: "))
 
-            patient = Patient(*cursor.execute(patient_query.query_find_patient_by_id(), (ID,)).fetchone())
-
-            values = new_values(patient)
-
-            cursor.execute(patient_query.query_update_patient_by_id(), (values.nome,
-
-                           values.cpf, values.dt_nascimento, values.endereco, values.id))
-
+            insert_new_values(ID,cursor)
         elif consulta == '4':
 
             break
