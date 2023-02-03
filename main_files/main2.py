@@ -3,7 +3,9 @@ from dotenv import dotenv_values
 from time import sleep
 from os import system
 from datetime import date, datetime
-import CRUDS.crud_paciente as cp
+import CRUDS.query_patient as patient
+import CRUDS.query_patient as patient_operation
+import main_files.menu.menu
 
 system('cls')
 
@@ -17,94 +19,6 @@ def connect_db(path_db:str) -> sqlite3.Connection :
         print(ex)
     return conn
 
-# caminho do banco 
-def route_db():
-    config = dotenv_values('.env.ambient')
-    path_db = config.get('hospital')
-    return path_db
-
-# insere valores do medico na tabela medico dentro do banco
-def insert_values_into_medico(cursor):
-    nome = input("nome do médico: ")
-    crm = input("número do CRM: ")
-    query = f"""INSERT INTO {'Medico'}(Nome,CRM) VALUES('{nome}','{crm}');"""
-    cursor.execute(query)
-
-# insere valores do paciente na tabela historico clinico dentro do banco
-def insert_values_into_historico_clinico(cursor):
-    id_paciente = int(input('id paciente: '))
-    doenca = input('doença(s): ')
-    alergia = input('alergia(s): ')
-    medicacao = input('remédios: ')
-    values = (id_paciente,doenca,alergia,medicacao)
-    query = f"""INSERT INTO {'Historico_Clinico'}(ID_Paciente,Doenca,Alergia,Medicacao)
-    VALUES ('{values[0]}','{values[1]}','{values[2]}','{values[3]}'); """
-    cursor.execute(query)
-
-# insere valores do paciente na tabela prontuario dentro do banco
-def insert_values_into_prontuario(cursor):
-    id_paciente = int(input('id paciente: '))
-    id_medico = int(input('id médico: '))
-    id_h_clinico = int(input('id histórico clinico: '))
-    descricao = input('descreva os sintomas que o paciente apresenta: ')
-    data_atual = date.today()
-    dt_atendimento = f"{str(data_atual.day)}/{str(data_atual.month)}/{str(data_atual.year)}"
-    values = (id_paciente, id_medico, id_h_clinico, dt_atendimento)
-    query = f"""INSERT INTO {'Prontuario'}(ID_Paciente, ID_Medico, ID_Historico_Clinico, Descricao, Data_Atendimento)
-    VALUES ('{values[0]}','{values[1]}','{values[2]}','{values[3]}'); """
-    cursor.execute(query)
-
-# procura médicos que tenham o nome informado e com possibilidade de mostrar mais 5 resultados se existir
-def find_medico(cursor):
-    nome = input('nome do médico: ')
-    query = f"SELECT * FROM Medico WHERE LOWER(Nome) like LOWER('%{nome}%');"
-    question = 'S'
-    while question == 'S':
-        results = (cursor.fetchmany(5))
-        for c in results:
-            print(c, end='\n')
-        if results == []:
-            print('sem mais resultados.')
-            question = 'n'
-        question = input('mostrar mais 5 resultados[S]? ').strip().upper()[0]
-
-def update_medico(cursor):
-    ID = input('Informe o ID do médico: ')
-    column = input("Informe o campo a receber atualização:")
-    valor = input("o novo valor: ")
-    cursor.execute(f"UPDATE Paciente SET {column} = '{valor}' WHERE ID = {int(ID)};")
-    print(f'o registro da coluna {column} foi atualizado para o novo valor {valor}.')
-
-# mostra tabelas disponíveis
-def main_menu():
-    menu = """
-    1 - acessar registro de pacientes
-    2 - acessar registro de médicos
-    3 - acessar registro de histórico clínico
-    4 - acessar registro de prontuário
-    """
-    print(menu)
-
-# mostra as operações disponíveis
-def options():
-    menu = """
-    1 - criar registro na tabela
-    2 - consultar registros na tabela
-    3 - Atualizar registro na tabela
-    4 - Deletar registro na tabela
-    5 - Mostrar todos os registros
-    6 - Encerrar programa
-    """
-    print(menu)
-
-# mostra todos os valores da tabela paciente
-def show_all(cursor):
-    cursor.execute('SELECT * FROM Paciente;')
-    results = cursor.fetchall()
-    if results == []:
-        print('\nnenhum registro.')
-    return results
-
 # fecha a conexão com o banco
 def conn_close(conn):
     if conn:
@@ -116,7 +30,7 @@ if __name__ == "__main__":
     conn = connect_db("Hospital.db")
     cur = conn.cursor()
     fk = cur.execute('PRAGMA foreign_keys = ON;')
-    cur.execute(cp.create_table_paciente())
+    #cur.execute(cp.create_table_paciente())
     #create_table_medico(cursor=cur)
     #create_table_historico_clinico(cursor=cur)
     #create_table_prontuario(cursor=cur)
