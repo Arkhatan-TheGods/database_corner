@@ -25,7 +25,7 @@ def query_find_patienty_by_cpf() -> str:
 
 def query_update_patient_by_id() -> str:
     return """UPDATE Paciente 
-    SET Nome = : nome, CPF = :cpf, Data_Nascimento = :dt_nasc, Endereco = :end WHERE ID = :id ;"""
+    SET Nome = :nome, CPF = :cpf, Data_Nascimento = :dt_nasc, Endereco = :end WHERE ID = :id ;"""
 
 
 def query_delete_patient_by_id() -> str:
