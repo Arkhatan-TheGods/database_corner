@@ -33,10 +33,10 @@ def new_values(patient: Patient) -> tuple:
     if (cpf := input("novo CPF: ").strip()) != "":
         patient.cpf = cpf
 
-    if (data_nasci := input("...").strip()) != "":
+    if (data_nasci := input("nova data de nascimento(dd/mm/yyyy)").strip()) != "":
         patient.dt_nascimento
 
-    if (endereco := input("...").strip()) != "":
+    if (endereco := input("novo endereço: ").strip()) != "":
         patient.endereco
 
     return patient
