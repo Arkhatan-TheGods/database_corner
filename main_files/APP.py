@@ -4,15 +4,15 @@ from os import system
 
 import menu.menu as menu
 
-import CRUDS.query_patient as patient_query
+import CRUDS_QUERYS.query_patient as patient_query
 
-import CRUDS.query_doctor as doctor
+import CRUDS_QUERYS.query_doctor as doctor
 
-import CRUDS.query_historic_clinic as historic
+import CRUDS_QUERYS.query_historic_clinic as historic
 
-import CRUDS.query_medical_record as record
+import CRUDS_QUERYS.query_medical_record as record
 
-import CRUDS.operation_patient as patient_operation
+import CRUDS_OPERATIONS.operation_patient as patient_operation
 
 import traceback
 
@@ -83,8 +83,7 @@ if __name__ == "__main__":
 
                         values = patient_operation.values_patient()
 
-                        cur.execute(
-                            patient_query.query_insert_patient(), values)
+                        cur.execute(patient_query.query_insert_patient(), values)
 
                         novo = input('deseja adicionar novo valor [s/n]?').strip().lower()[0]
 
@@ -101,7 +100,7 @@ if __name__ == "__main__":
                     all = cur.execute(patient_query.query_show_all_patient()).fetchall()
 
                     for c in all:
-                        print(c)
+                        print(f"ID: {c[0]} NOME: {c[1]} CPF: {c[2]} DATA DE NASCIMENTO: {c[3]} ENDEREÇO: {c[4]}")
 
                 elif option == '5':
 

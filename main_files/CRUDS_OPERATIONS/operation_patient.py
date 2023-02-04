@@ -1,33 +1,26 @@
 from sqlite3 import Cursor
 
 
-import CRUDS.query_patient as patient_query
+import CRUDS_QUERYS.query_patient as patient_query
 
 
 class Patient():
 
     def __init__(self, id_, nome, cpf, dt_nascimento, endereco):
         self.id = id_
-
         self.nome = nome
         self.cpf = cpf
-
         self.dt_nascimento = dt_nascimento
         self.endereco = endereco
 
 
 # get values to use with insert on the table patient
-
-
 def values_patient() -> tuple:
 
     nome = input("nome do paciente: ")
 
     cpf = input("CPF: ")
-    dt_nasc = input(
-
-
-        "Data de nascimento(xx/xx/xxxx): ")
+    dt_nasc = input("Data de nascimento(xx/xx/xxxx): ")
 
     endereco = input("Endereço: ")
 
@@ -35,8 +28,6 @@ def values_patient() -> tuple:
 
 
 # atualiza registro do paciente a partir do ID que é fixo e único
-
-
 def new_values(patient: Patient) -> "class":
 
     print("dê enter apenas caso deseja manter o valor.")
@@ -66,6 +57,14 @@ def insert_new_values(ID, cursor):
     cursor.execute(patient_query.query_update_patient_by_id(), (values.nome,
                    values.cpf, values.dt_nascimento, values.endereco, values.id))
 
+
+def find_by_name(name, cursor):
+    return cursor.execute(patient_query.query_find_patient_by_name(), (f"{name}%",)).fetchall()
+
+
+def find_by_cpf(cpf, cursor):
+    return cursor.execute(patient_query.query_find_patient, by_cpf(), (f"{cpf}")).fetchone()
+
 # atualiza os valores na tabela
 
 
@@ -75,13 +74,13 @@ def update_paciente(cursor):
         consulta = input(
 
 
-            "Consulta/Atualizar \n[1] Nome \n[2] CPF \n[3] atualizar direto pelo ID \n[4] Sair \nDigite sua opção: ")
+            "Consulta/Atualizar \n[1] Nome \n[2] CPF \n[3] atualizar direto pelo ID \n[4] Menu Principal \nDigite sua opção: ")
 
         if consulta == '1':
 
             name = input("informe o nome: ")
 
-            result = cursor.execute(patient_query.query_find_patient_by_name(), (f"{name}%",)).fetchall()
+            result = find_by_name(name, cursor)
 
             if result:
                 for c in result:
@@ -91,7 +90,7 @@ def update_paciente(cursor):
 
                     ID = int(input("informe o ID: "))
 
-                    insert_new_values(ID,cursor)
+                    insert_new_values(ID, cursor)
             else:
 
                 print('sem resultados.')
@@ -100,8 +99,7 @@ def update_paciente(cursor):
 
             cpf = input("informe o cpf: ")
 
-            result = cursor.execute(patient_query.query_find_patienty_by_cpf(), (f"{cpf}")).fetchone()
-
+            result = find_by_cpf(cpf, cursor)
             if result:
                 for c in result:
                     print(c)
@@ -110,7 +108,7 @@ def update_paciente(cursor):
 
                     ID = input("informe o ID: ")
 
-                    insert_new_values(ID,cursor)
+                    insert_new_values(ID, cursor)
             else:
 
                 print('sem resultados.')
@@ -119,7 +117,7 @@ def update_paciente(cursor):
 
             ID = int(input("informe o ID: "))
 
-            insert_new_values(ID,cursor)
+            insert_new_values(ID, cursor)
         elif consulta == '4':
 
             break
