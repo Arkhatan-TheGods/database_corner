@@ -6,7 +6,7 @@ import menu.menu as menu
 
 import CRUDS_QUERYS.query_patient as patient_query
 
-import CRUDS_QUERYS.query_doctor as doctor
+import CRUDS_QUERYS.query_doctor as doctor_query
 
 import CRUDS_QUERYS.query_historic_clinic as historic
 
@@ -14,15 +14,16 @@ import CRUDS_QUERYS.query_medical_record as record
 
 import CRUDS_OPERATIONS.operation_patient as patient_operation
 
+import CRUDS_OPERATIONS.operation_doctor as doctor_operation
+
 import traceback
+
 
 system('cls')
 
 
 def connect_db(path_db: str) -> sqlite3.Connection:
     "this connect to db that you want, inform the: .db"
-
-    # print('conectado.')
 
     try:
 
@@ -47,15 +48,11 @@ if __name__ == "__main__":
 
     cur.execute(patient_query.query_create_patient())
 
-    cur.execute(doctor.query_create_doctor())
+    cur.execute(doctor_query.query_create_doctor())
 
-    cur.execute(
+    cur.execute(historic.query_create_historic_clinic())
 
-        historic.query_create_historic_clinic())
-
-    cur.execute(
-
-        record.query_create_medical_record())
+    cur.execute(record.query_create_medical_record())
     conn.close()
 
     while True:
@@ -88,18 +85,29 @@ if __name__ == "__main__":
                         novo = input('deseja adicionar novo valor [s/n]?').strip().lower()[0]
 
                 elif option == '2':
-
-                    patient_operation.update_paciente(cursor=cur)
+                    patient_operation.submenu_find_or_update(cursor=cur)
 
                 elif option == '3':
+
                     ID = int(input("informe o ID a ser deletado: "))
-                    cur.execute(patient_query.query_delete_patient_by_id(), (ID,))
+
+                    result = cur.execute(patient_query.query_find_patient_by_id(), (ID,)).fetchone()
+
+                    print(
+                        f"ID:{result[0]}, Nome:{result[1]}, CPF:{result[2]}, Data de Nascimento:{result[3]} Endereço:{result[4]}")
+
+                    question = input(f"deseja realmente deletar o paciente [s/n]: ").strip().lower()[0]
+
+                    if question == 's':
+
+                        cur.execute(patient_query.query_delete_patient_by_id(), (ID,))
 
                 elif option == '4':
 
                     all = cur.execute(patient_query.query_show_all_patient()).fetchall()
 
                     for c in all:
+
                         print(f"ID: {c[0]} NOME: {c[1]} CPF: {c[2]} DATA DE NASCIMENTO: {c[3]} ENDEREÇO: {c[4]}")
 
                 elif option == '5':
@@ -115,7 +123,8 @@ if __name__ == "__main__":
                 option = menu.option_choice()
 
                 if option == '1':
-                    pass
+
+                    cur.execute(doctor_query.query_insert_doctor(), doctor_operation.insert_values_into_medico())
 
                 elif option == '2':
                     pass
@@ -124,6 +133,11 @@ if __name__ == "__main__":
                     pass
 
                 elif option == '4':
+
+                    all = cur.execute(doctor_query.query_Show_all_doctor())
+
+                    for c in all:
+                        print(c)
                     pass
 
                 elif option == '5':
@@ -191,6 +205,7 @@ if __name__ == "__main__":
 
             else:
                 print(
+
 
                     "OPÇÃO INVÁLIDA, TENTE NOVAMENTE.")
 

@@ -10,6 +10,8 @@ def query_insert_doctor() -> str:
     return """INSERT INTO Medico(Nome,CRM)
     VALUES (:nome, :crm) ;"""
 
+def query_find_doctor_by_id():
+    return "SELECT * FROM Medico WHERE ID = :id ;"
 
 def query_find_doctor_by_name() -> str:
     return "SELECT * FROM Medico WHERE LOWER(Nome) LIKE LOWER(':nome%') LIMIT 10 ;"
@@ -22,5 +24,5 @@ def query_update_doctor_by_id() -> str:
 def query_delete_doctor_by_id() -> str:
     return "DELETE FROM Medico WHERE ID = :id ;"
 
-def query_Show_all_historic_clinic() -> str:
+def query_Show_all_doctor() -> str:
     return "SELECT * FROM Medico;"

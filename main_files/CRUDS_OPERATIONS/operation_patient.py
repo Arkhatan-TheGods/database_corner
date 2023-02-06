@@ -1,6 +1,5 @@
 from sqlite3 import Cursor
 
-
 import CRUDS_QUERYS.query_patient as patient_query
 
 
@@ -15,11 +14,12 @@ class Patient():
 
 
 # get values to use with insert on the table patient
-def values_patient() -> tuple:
 
+def values_patient() -> tuple:
     nome = input("nome do paciente: ")
 
     cpf = input("CPF: ")
+
     dt_nasc = input("Data de nascimento(xx/xx/xxxx): ")
 
     endereco = input("Endereço: ")
@@ -28,60 +28,56 @@ def values_patient() -> tuple:
 
 
 # atualiza registro do paciente a partir do ID que é fixo e único
+
 def new_values(patient: Patient) -> "class":
 
     print("dê enter apenas caso deseja manter o valor.")
 
     if (nome := input("novo nome: ").strip()) != "":
-
         patient.nome = nome
 
     if (cpf := input("novo CPF: ").strip()) != "":
         patient.cpf = cpf
 
     if (data_nasci := input("nova data de nascimento(dd/mm/yyyy): ").strip()) != "":
-
         patient.dt_nascimento
 
     if (endereco := input("novo endereço: ").strip()) != "":
         patient.endereco
-
     return patient
 
 
 def insert_new_values(ID, cursor):
+
     patient = Patient(*cursor.execute(patient_query.query_find_patient_by_id(), (ID,)).fetchone())
 
     values = new_values(patient)
 
-    cursor.execute(patient_query.query_update_patient_by_id(), (values.nome,
-                   values.cpf, values.dt_nascimento, values.endereco, values.id))
+    cursor.execute(patient_query.query_update_patient_by_id(), (values.nome,values.cpf, values.dt_nascimento, values.endereco, values.id))
 
 
-def find_by_name(name, cursor):
+def find_patient_by_name(name, cursor):
+
     return cursor.execute(patient_query.query_find_patient_by_name(), (f"{name}%",)).fetchall()
 
 
-def find_by_cpf(cpf, cursor):
+def find_patient_by_cpf(cpf, cursor):
+
     return cursor.execute(patient_query.query_find_patient, by_cpf(), (f"{cpf}")).fetchone()
 
+
 # atualiza os valores na tabela
-
-
-def update_paciente(cursor):
+def submenu_find_or_update(cursor):
 
     while True:
         consulta = input(
 
-
             "Consulta/Atualizar \n[1] Nome \n[2] CPF \n[3] atualizar direto pelo ID \n[4] Menu Principal \nDigite sua opção: ")
 
         if consulta == '1':
-
             name = input("informe o nome: ")
 
-            result = find_by_name(name, cursor)
-
+            result = find_patient_by_name(name, cursor)
             if result:
                 for c in result:
                     print(c)
@@ -96,10 +92,9 @@ def update_paciente(cursor):
                 print('sem resultados.')
 
         elif consulta == '2':
-
             cpf = input("informe o cpf: ")
 
-            result = find_by_cpf(cpf, cursor)
+            result = find_patient_by_cpf(cpf, cursor)
             if result:
                 for c in result:
                     print(c)
@@ -118,6 +113,7 @@ def update_paciente(cursor):
             ID = int(input("informe o ID: "))
 
             insert_new_values(ID, cursor)
+
         elif consulta == '4':
 
             break
