@@ -108,7 +108,7 @@ if __name__ == "__main__":
 
                     for c in all:
 
-                        print(f"ID: {c[0]} NOME: {c[1]} CPF: {c[2]} DATA DE NASCIMENTO: {c[3]} ENDEREÇO: {c[4]}")
+                        print(f"ID: {c[0]:.3f} NOME: {c[1]} CPF: {c[2]} DATA DE NASCIMENTO: {c[3]} ENDEREÇO: {c[4]}")
 
                 elif option == '5':
 
@@ -123,30 +123,31 @@ if __name__ == "__main__":
                 option = menu.option_choice()
 
                 if option == '1':
-
-                    cur.execute(doctor_query.query_insert_doctor(), doctor_operation.insert_values_into_medico())
+                    novo = 's'
+                    while novo == 's':
+                        cur.execute(doctor_query.query_insert_doctor(), doctor_operation.insert_values_into_medico())
+                        novo = input('deseja adicionar novo valor [s/n]?').strip().lower()[0]
 
                 elif option == '2':
-                    pass
+                    doctor_operation.submenu_find_or_update(cursor)
 
                 elif option == '3':
-                    pass
+                    ID = input("informe o ID a ser deletado: ")
+                    result = cur.execute(doctor_query.query_find_doctor_by_id(), (ID,)).fetchone()
+                    print(f'ID:{result[0]} Nome:{result[1]} CRM:{result[2]}')
+                    if input('deseja realmente deletar o doutor [s/n]: ') == 's':
+                        cur.execute(doctor_query.query_delete_doctor_by_id(), (ID,))
 
                 elif option == '4':
 
                     all = cur.execute(doctor_query.query_Show_all_doctor())
 
                     for c in all:
-                        print(c)
-                    pass
+                        print("ID:{:.3f} Nome:{} CRM:{}".format(c[0],c[1],c[2]))
 
                 elif option == '5':
-                    pass
-
-                elif option == '6':
-
                     print("Programa Finalizado.")
-
+                    break
             elif option == '3':
 
                 menu.options()

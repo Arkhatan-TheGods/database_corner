@@ -13,9 +13,9 @@ def create_table_medico():
 
 
 class Doctor():
-    def __init__(self, ID, name, crm):
+    def __init__(self, ID, nome, crm):
         self.id = ID
-        self.name = name
+        self.nome = nome
         self.crm = crm
 
 
@@ -31,11 +31,19 @@ def find_doctor_by_name(name, cursor):
     return cursor.execute(doctor_query.query_find_doctor_by_name(), (f"{name}%",)).fetchall()
 
 
-def new_values(Doctor: Doctor) -> "class":
-    pass
+def new_values(doctor: Doctor) -> "class":
+    if (nome := input("novo nome: ").strip() != ''):
+        doctor.nome = nome
+    if (crm := input("novo crm: ").strip() != ''):
+        doctor.crm = crm
+    return doctor
 
 def insert_new_values(ID, cursor):
-    result = Doctor(cursor.execute(doctor_query.query_find_doctor_by_id(),(ID,)).fetchone())
+    result = Doctor(cursor.execute(doctor_query.query_find_doctor_by_id(), (ID,)).fetchone())
+    values = new_values(result)
+    cursor.execute(doctor_query.query_update_doctor_by_id(), (values.nome,values.crm,values.id))
+
+
 def submenu_find_or_update(cursor):
     while True:
         consulta = input(
@@ -48,8 +56,10 @@ def submenu_find_or_update(cursor):
 
             if input("deseja atualizar [s/n]: ").strip().lower()[0] == 's':
                 ID = input("informe o ID: ")
-
+                insert_new_values(ID, cursor)
         elif consulta == '2':
-            pass
+            ID = input("informe o ID: ")
+            insert_new_values(ID, cursor)
+            
         elif consulta == '3':
             break

@@ -1,7 +1,7 @@
 def main_menu() -> str:
     menu = """
 
-Bem-Vindo ao Controle de registros do Hospital!
+Controle de registros do Hospital!
 
     1 - acessar registro de pacientes
     2 - acessar registro de médicos
