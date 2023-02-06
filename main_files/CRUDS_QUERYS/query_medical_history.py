@@ -22,15 +22,14 @@ def query_find_medical_history_by_id() -> str:
     return """SELECT * FROM Historico_Clinico WHERE ID = :id ;"""
 
 
-def query_update_historic_clinic_by_id() -> str:
-
+def query_update_medical_history_by_id() -> str:
     return """UPDATE Historico_Clinico 
     SET ID_Paciente = :id, Doenca = :doenca, Alergia = :alergia, Medicacao WHERE ID = :id ;"""
 
 
-def query_delete_historic_clinic_by_id() -> str:
+def query_delete_medical_history_by_id() -> str:
     return "DELETE FROM Historico_Clinico WHERE ID = id: ;"
 
 
-def query_Show_all_historic_clinic() -> str:
+def query_show_all_medical_history() -> str:
     return "SELECT * FROM Historico_Clinico;"
