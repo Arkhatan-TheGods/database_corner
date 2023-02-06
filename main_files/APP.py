@@ -8,7 +8,7 @@ import CRUDS_QUERYS.query_patient as patient_query
 
 import CRUDS_QUERYS.query_doctor as doctor_query
 
-import CRUDS_QUERYS.query_historic_clinic as historic
+import CRUDS_QUERYS.query_medical_history as history
 
 import CRUDS_QUERYS.query_medical_record as record
 
@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     cur.execute(doctor_query.query_create_doctor())
 
-    cur.execute(historic.query_create_historic_clinic())
+    cur.execute(history.query_create_medical_history())
 
     cur.execute(record.query_create_medical_record())
     conn.close()
@@ -85,6 +85,7 @@ if __name__ == "__main__":
                         novo = input('deseja adicionar novo valor [s/n]?').strip().lower()[0]
 
                 elif option == '2':
+
                     patient_operation.submenu_find_or_update(cursor=cur)
 
                 elif option == '3':
@@ -94,6 +95,8 @@ if __name__ == "__main__":
                     result = cur.execute(patient_query.query_find_patient_by_id(), (ID,)).fetchone()
 
                     print(
+
+
                         f"ID:{result[0]}, Nome:{result[1]}, CPF:{result[2]}, Data de Nascimento:{result[3]} Endereço:{result[4]}")
 
                     question = input(f"deseja realmente deletar o paciente [s/n]: ").strip().lower()[0]
@@ -104,11 +107,15 @@ if __name__ == "__main__":
 
                 elif option == '4':
 
-                    all = cur.execute(patient_query.query_show_all_patient()).fetchall()
+                    password = input("informe a senha:")
 
-                    for c in all:
+                    if password == '54321':
 
-                        print(f"ID: {c[0]:.3f} NOME: {c[1]} CPF: {c[2]} DATA DE NASCIMENTO: {c[3]} ENDEREÇO: {c[4]}")
+                        all = cur.execute(patient_query.query_show_all_patient()).fetchall()
+
+                        for c in all:
+
+                            print(f"ID: {c[0]:.3f} NOME: {c[1]} CPF: {c[2]} DATA DE NASCIMENTO: {c[3]} ENDEREÇO: {c[4]}")
 
                 elif option == '5':
 
@@ -123,19 +130,29 @@ if __name__ == "__main__":
                 option = menu.option_choice()
 
                 if option == '1':
+
                     novo = 's'
+
                     while novo == 's':
+
                         cur.execute(doctor_query.query_insert_doctor(), doctor_operation.insert_values_into_medico())
+
                         novo = input('deseja adicionar novo valor [s/n]?').strip().lower()[0]
 
                 elif option == '2':
+
                     doctor_operation.submenu_find_or_update(cursor)
 
                 elif option == '3':
+
                     ID = input("informe o ID a ser deletado: ")
+
                     result = cur.execute(doctor_query.query_find_doctor_by_id(), (ID,)).fetchone()
+
                     print(f'ID:{result[0]} Nome:{result[1]} CRM:{result[2]}')
+
                     if input('deseja realmente deletar o doutor [s/n]: ') == 's':
+
                         cur.execute(doctor_query.query_delete_doctor_by_id(), (ID,))
 
                 elif option == '4':
@@ -143,11 +160,15 @@ if __name__ == "__main__":
                     all = cur.execute(doctor_query.query_Show_all_doctor())
 
                     for c in all:
-                        print("ID:{:.3f} Nome:{} CRM:{}".format(c[0],c[1],c[2]))
+
+                        print("ID:{:.3f} Nome:{} CRM:{}".format(c[0], c[1], c[2]))
 
                 elif option == '5':
+
                     print("Programa Finalizado.")
+
                     break
+
             elif option == '3':
 
                 menu.options()
@@ -155,7 +176,12 @@ if __name__ == "__main__":
                 option = menu.option_choice()
 
                 if option == '1':
-                    pass
+
+                    novo = 's'
+
+                    while novo == 's':
+
+                        novo = input("deseja adicionar novo histórico clínico [s/n]: ").strip().lower()[0]
 
                 elif option == '2':
                     pass
@@ -206,6 +232,8 @@ if __name__ == "__main__":
 
             else:
                 print(
+
+
 
 
                     "OPÇÃO INVÁLIDA, TENTE NOVAMENTE.")
