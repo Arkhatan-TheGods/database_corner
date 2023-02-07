@@ -1,5 +1,4 @@
 import sqlite3
-
 from os import system
 import menu.menu as menu
 import CRUDS_QUERYS.query_patient as patient_query
@@ -47,14 +46,17 @@ if __name__ == "__main__":
             if option == '1':
                 menu.options_patient()
                 option = menu.option_choice()
+                
                 if option == '1':
                     novo = 's'
                     while novo == 's':
                         values = patient_operation.values_patient()
                         cur.execute(patient_query.query_insert_patient(), values)
                         novo = input('deseja adicionar novo valor [s/n]?').strip().lower()[0]
+
                 elif option == '2':
                     patient_operation.submenu_find_or_update(cursor=cur)
+
                 elif option == '3':
                     ID = int(input("informe o ID a ser deletado: "))
                     result = cur.execute(patient_query.query_find_patient_by_id(), (ID,)).fetchone()
@@ -63,35 +65,43 @@ if __name__ == "__main__":
                     question = input(f"deseja realmente deletar o paciente [s/n]: ").strip().lower()[0]
                     if question == 's':
                         cur.execute(patient_query.query_delete_patient_by_id(), (ID,))
+
                 elif option == '4':
                     password = input("informe a senha:")
                     if password == '54321':
                         all = cur.execute(patient_query.query_show_all_patient()).fetchall()
                         for c in all:
                             print(f"ID: {c[0]:.3f} NOME: {c[1]} CPF: {c[2]} DATA DE NASCIMENTO: {c[3]} ENDEREÇO: {c[4]}")
+
                 elif option == '5':
                     print("Programa Finalizado.")
                     break
+
             elif option == '2':
                 menu.options()
                 option = menu.option_choice()
+
                 if option == '1':
                     novo = 's'
                     while novo == 's':
                         cur.execute(doctor_query.query_insert_doctor(), doctor_operation.insert_values_into_medico())
                         novo = input('deseja adicionar novo valor [s/n]?').strip().lower()[0]
+
                 elif option == '2':
                     doctor_operation.submenu_find_or_update(cursor)
+
                 elif option == '3':
                     ID = input("informe o ID a ser deletado: ")
                     result = cur.execute(doctor_query.query_find_doctor_by_id(), (ID,)).fetchone()
                     print(f'ID:{result[0]} Nome:{result[1]} CRM:{result[2]}')
                     if input('deseja realmente deletar o doutor [s/n]: ') == 's':
                         cur.execute(doctor_query.query_delete_doctor_by_id(), (ID,))
+
                 elif option == '4':
                     all = cur.execute(doctor_query.query_Show_all_doctor())
                     for c in all:
                         print("ID:{:.3f} Nome:{} CRM:{}".format(c[0], c[1], c[2]))
+
                 elif option == '5':
                     print("Programa Finalizado.")
                     break
@@ -101,12 +111,7 @@ if __name__ == "__main__":
                 option = menu.option_choice()
 
                 if option == '1':
-                    novo = 's'
-                    while novo == 's':
-                        cur.execute(history_query.query_insert_medical_history(),
-                                    (history_operation.insert_medical_history()))
-                        novo = input("deseja adicionar novo histórico clínico [s/n]: ").strip().lower()[0]
-
+                    pass
                 elif option == '2':
                     pass
 
@@ -122,26 +127,6 @@ if __name__ == "__main__":
                     break
 
             elif option == '4':
-                menu.options()
-                option = menu.option_choice()
-
-                if option == '1':
-                    pass
-
-                elif option == '2':
-                    pass
-
-                elif option == '3':
-                    pass
-
-                elif option == '4':
-                    pass
-
-                elif option == '5':
-                    print("Programa Finalizado.")
-                    break
-
-            elif option == '5':
                 print("Programa Finalizado.")
                 break
 

@@ -3,11 +3,10 @@ def main_menu() -> str:
 
 Controle de registros do Hospital!
 
-    1 - Acessar registro de pacientes
+    1 - Acessar registro de pacientes e/ou histórico clínico
     2 - Acessar registro de médicos
-    3 - Acessar registro de histórico clínico
-    4 - Acessar registro de prontuário
-    5 - Encerrar programa
+    3 - Acessar registro de prontuário
+    4 - Encerrar programa
     """
     print(menu)
 
@@ -36,3 +35,11 @@ def options() -> str:
 def option_choice():
     option = input("Informe a opção: ")
     return option
+
+def submenu_medical_history():
+    consulta = input("""[1] busca por nome 
+        [2] acessar direto pelo ID do Paciente 
+        [3] atualizar histórico clínico 
+        [4] deletar histórico clínico
+        [5] menu principal""")
+    return consulta

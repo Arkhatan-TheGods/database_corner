@@ -1,15 +1,11 @@
 import CRUDS_QUERYS.query_doctor as doctor_query
 from sqlite3 import Cursor
 
-# cria tabela medico no banco
-
 
 def create_table_medico():
     return """CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     Nome TEXT NOT NULL, CRM TEXT NOT NULL UNIQUE);
     """
-
-# insere valores do medico na tabela medico dentro do banco
 
 
 class Doctor():
@@ -24,8 +20,6 @@ def insert_values_into_medico():
     crm = input("número do CRM: ")
     return nome, crm
 
-# procura o doutor pelo nome
-
 
 def find_doctor_by_name(name, cursor):
     return cursor.execute(doctor_query.query_find_doctor_by_name(), (f"{name}%",)).fetchall()
@@ -38,10 +32,11 @@ def new_values(doctor: Doctor) -> "class":
         doctor.crm = crm
     return doctor
 
+
 def insert_new_values(ID, cursor):
     result = Doctor(cursor.execute(doctor_query.query_find_doctor_by_id(), (ID,)).fetchone())
     values = new_values(result)
-    cursor.execute(doctor_query.query_update_doctor_by_id(), (values.nome,values.crm,values.id))
+    cursor.execute(doctor_query.query_update_doctor_by_id(), (values.nome, values.crm, values.id))
 
 
 def submenu_find_or_update(cursor):
@@ -60,6 +55,6 @@ def submenu_find_or_update(cursor):
         elif consulta == '2':
             ID = input("informe o ID: ")
             insert_new_values(ID, cursor)
-            
+
         elif consulta == '3':
             break
