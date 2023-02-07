@@ -1,7 +1,6 @@
 from sqlite3 import Cursor
-
 import CRUDS_QUERYS.query_patient as patient_query
-
+import CRUDS_QUERYS.query_medical_history as medical_history
 
 class Patient():
 
@@ -14,7 +13,6 @@ class Patient():
 
 
 # get values to use with insert on the table patient
-
 def values_patient() -> tuple:
     nome = input("nome do paciente: ")
 
@@ -28,9 +26,7 @@ def values_patient() -> tuple:
 
 
 # atualiza registro do paciente a partir do ID que é fixo e único
-
 def new_values(patient: Patient) -> "class":
-
     print("dê enter apenas caso deseja manter o valor.")
 
     if (nome := input("novo nome: ").strip()) != "":
@@ -48,11 +44,8 @@ def new_values(patient: Patient) -> "class":
 
 
 def insert_new_values(ID, cursor):
-
     patient = Patient(*cursor.execute(patient_query.query_find_patient_by_id(), (ID,)).fetchone())
-
     values = new_values(patient)
-
     cursor.execute(patient_query.query_update_patient_by_id(), (values.nome,values.cpf, values.dt_nascimento, values.endereco, values.id))
 
 
@@ -68,52 +61,55 @@ def find_patient_by_cpf(cpf, cursor):
 
 # atualiza os valores na tabela
 def submenu_find_or_update(cursor):
-
     while True:
         consulta = input(
-
             "Consulta/Atualizar \n[1] Nome \n[2] CPF \n[3] atualizar direto pelo ID \n[4] Menu Principal \nDigite sua opção: ")
 
         if consulta == '1':
             name = input("informe o nome: ")
-
             result = find_patient_by_name(name, cursor)
             if result:
                 for c in result:
                     print(c)
 
                 if input("deseja atualizar [s/n]: ").strip().lower() == 's':
-
                     ID = int(input("informe o ID: "))
-
                     insert_new_values(ID, cursor)
             else:
-
                 print('sem resultados.')
 
         elif consulta == '2':
             cpf = input("informe o cpf: ")
-
             result = find_patient_by_cpf(cpf, cursor)
             if result:
                 for c in result:
                     print(c)
 
                 if input("deseja atualizar [s/n]: ").strip().lower() == 's':
-
                     ID = input("informe o ID: ")
-
                     insert_new_values(ID, cursor)
             else:
-
                 print('sem resultados.')
 
         elif consulta == '3':
-
             ID = int(input("informe o ID: "))
-
             insert_new_values(ID, cursor)
 
         elif consulta == '4':
-
             break
+
+def submenu_medical_history(cursor):
+    while True:
+        consulta = input("[1] busca por nome \n[2] acessar direto pelo ID do Paciente \n[3] menu principal")
+        
+        if consulta == '1':
+            name = input('informe o nome: ').strip()
+            pass
+        elif consulta == '2':
+            ID = int(input('informe o ID: ').strip())
+            result = cursor.execute()
+            pass
+        elif consulta == '3':
+            break
+        else:
+            print('opção inválida, tente novamente.')

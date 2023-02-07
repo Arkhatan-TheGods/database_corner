@@ -45,7 +45,7 @@ if __name__ == "__main__":
             menu.main_menu()
             option = menu.option_choice()
             if option == '1':
-                menu.options()
+                menu.options_patient()
                 option = menu.option_choice()
                 if option == '1':
                     novo = 's'
@@ -104,7 +104,7 @@ if __name__ == "__main__":
                     novo = 's'
                     while novo == 's':
                         cur.execute(history_query.query_insert_medical_history(),
-                                    history_operation.insert_medical_history())
+                                    (history_operation.insert_medical_history()))
                         novo = input("deseja adicionar novo histórico clínico [s/n]: ").strip().lower()[0]
 
                 elif option == '2':
@@ -114,8 +114,9 @@ if __name__ == "__main__":
                     pass
 
                 elif option == '4':
-                    pass
-
+                    all = cur.execute(history_query.query_show_all_medical_history()).fetchall()
+                    for c in all:
+                        print(c)
                 elif option == '5':
                     print("Programa Finalizado.")
                     break
@@ -146,13 +147,10 @@ if __name__ == "__main__":
 
             else:
                 print("OPÇÃO INVÁLIDA, TENTE NOVAMENTE.")
-
             conn.commit()
 
         except Exception as ex:
-
             conn.rollback()
-
             print(traceback.format_exc())
 
         finally:
