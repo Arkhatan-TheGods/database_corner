@@ -56,8 +56,11 @@ if __name__ == "__main__":
 
                 elif option == '2':
                     patient_operation.submenu_find_or_update(cursor=cur)
-
+                
                 elif option == '3':
+                    pass
+
+                elif option == '4':
                     ID = int(input("informe o ID a ser deletado: "))
                     result = cur.execute(patient_query.query_find_patient_by_id(), (ID,)).fetchone()
                     print(
@@ -66,14 +69,14 @@ if __name__ == "__main__":
                     if question == 's':
                         cur.execute(patient_query.query_delete_patient_by_id(), (ID,))
 
-                elif option == '4':
+                elif option == '5':
                     password = input("informe a senha:")
                     if password == '54321':
                         all = cur.execute(patient_query.query_show_all_patient()).fetchall()
                         for c in all:
                             print(f"ID: {c[0]:.3f} NOME: {c[1]} CPF: {c[2]} DATA DE NASCIMENTO: {c[3]} ENDEREÇO: {c[4]}")
 
-                elif option == '5':
+                elif option == '6':
                     print("Programa Finalizado.")
                     break
 
