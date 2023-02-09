@@ -3,12 +3,15 @@ import CRUDS_QUERYS.query_medical_history as history_query
 from CRUDS_OPERATIONS.operation_patient import find_patient_by_name
 import menu.menu as menu
 
+
 class History():
-    def __init__(self,id_paciente,doenca,alergia,medicacao):
+    def __init__(self, id_, id_paciente, doenca, alergia, medicacao):
+        self.id = id_
         self.id_paciente = id_paciente
         self.doenca = doenca
         self.alergia = alergia
         self.medicacao = medicacao
+
 
 def values_medical_history() -> tuple:
     id_paciente = int(input('informe o id do paciente: ').strip())
@@ -18,14 +21,36 @@ def values_medical_history() -> tuple:
     return id_paciente, doenca, alergia, medicacao
 
 
-def find_medical_history(cursor) -> "class History":
-    ID = int(input('informe o ID do Paciente: ').strip())
-    result = History(cursor.execute(history_query.query_find_medical_history_by_id_patient(), (ID,)).fetchone())
+def find_medical_history(ID, cursor) -> History:
+    result = cursor.execute(history_query.query_find_medical_history_by_id_patient(), (ID,)).fetchone()
     return result
 
 
 def insert_medical_history(values, cursor):
-    cursor.execute(history_query.query_insert_medical_history(),(values))
+    cursor.execute(history_query.query_insert_medical_history(), (values))
+
+def new_values(history: History) -> "class":
+    print("dê enter apenas caso deseja manter o valor.")
+
+    if (id_paciente := input("digite o novo id: ").strip()) != "":
+        history.id_paciente = id_paciente
+
+    if (doenca := input("atualizar registro de doença: ")) != "":
+        history.doenca = doenca
+
+    if (alergia := input("atualizar registro de alergia:")) != "":
+        history.alergia = alergia
+    
+    if (medicacao := input("atualizar medicacao: ")) != "":
+        history.medicacao = medicacao
+    return history
+
+def update_values(ID, cursor):
+    history = find_medical_history(ID, cursor)
+    values = new_values(history)
+    cursor.execute(history_query.query_update_medical_history_by_id(), (history.id_paciente, 
+    history.doenca, history.alergia, history.medicacao))
+
 
 def submenu_medical_history(cursor):
     while True:
@@ -37,6 +62,7 @@ def submenu_medical_history(cursor):
             for c in result:
                 print(c)
 
+            ID = int(input('informe o ID do Paciente: ').strip())
             found = find_medical_history(ID, cursor)
             if found == None:
                 print("Histórico Clínico não existe")
@@ -48,12 +74,21 @@ def submenu_medical_history(cursor):
                 print(found)
 
         elif consulta == '2':
-            find_medical_history(cursor)
-            
-        elif consulta == '3':
-            found = find_medical_history(cursor)
-            
+            ID = int(input('informe o ID do Paciente: ').strip())
+            found = find_medical_history(ID, cursor)
+            if found == None:
+                print("Histórico Clínico não existe")
+            elif found != None:
+                print(found)
 
+        elif consulta == '3':
+            ID = int(input('informe o ID do Paciente: ').strip())
+            found = find_medical_history(ID, cursor)
+            if found != None:
+                update_values(ID, cursor)
+                
+            elif found == None:
+                print("Histórico clínico não existe")
         elif consulta == '4':
             pass
 
