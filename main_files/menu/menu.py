@@ -10,6 +10,7 @@ Controle de registros do Hospital!
     """
     print(menu)
 
+
 def options_patient() -> str:
     menu = """
     1 - Criar registro na tabela
@@ -32,9 +33,11 @@ def options() -> str:
     """
     print(menu)
 
+
 def option_choice():
     option = input("Informe a opção: ")
     return option
+
 
 def submenu_medical_history():
     consulta = input("""
@@ -42,5 +45,6 @@ def submenu_medical_history():
     2 - acessar direto pelo ID do Paciente 
     3 - atualizar histórico clínico 
     4 - deletar histórico clínico
-    5 - menu principal""")
+    5 - menu principal
+    Sua opção: """)
     return consulta

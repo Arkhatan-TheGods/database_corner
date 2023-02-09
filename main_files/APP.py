@@ -58,7 +58,7 @@ if __name__ == "__main__":
                     patient_operation.submenu_find_or_update(cursor=cur)
                 
                 elif option == '3':
-                    pass
+                    history_operation.submenu_medical_history(cursor=cur)
 
                 elif option == '4':
                     ID = int(input("informe o ID a ser deletado: "))
@@ -91,7 +91,7 @@ if __name__ == "__main__":
                         novo = input('deseja adicionar novo valor [s/n]?').strip().lower()[0]
 
                 elif option == '2':
-                    doctor_operation.submenu_find_or_update(cursor)
+                    doctor_operation.submenu_find_or_update(cursor=cur)
 
                 elif option == '3':
                     ID = input("informe o ID a ser deletado: ")
@@ -103,7 +103,7 @@ if __name__ == "__main__":
                 elif option == '4':
                     all = cur.execute(doctor_query.query_Show_all_doctor())
                     for c in all:
-                        print("ID:{:.3f} Nome:{} CRM:{}".format(c[0], c[1], c[2]))
+                        print("ID:{} Nome:{} CRM:{}".format(c[0], c[1], c[2]))
 
                 elif option == '5':
                     print("Programa Finalizado.")

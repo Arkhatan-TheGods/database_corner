@@ -14,7 +14,7 @@ def query_find_doctor_by_id():
     return "SELECT * FROM Medico WHERE ID = :id ;"
 
 def query_find_doctor_by_name() -> str:
-    return "SELECT * FROM Medico WHERE LOWER(Nome) LIKE LOWER(':nome%') LIMIT 10 ;"
+    return "SELECT * FROM Medico WHERE LOWER(Nome) LIKE LOWER(:nome) LIMIT 10 ;"
 
 
 def query_update_doctor_by_id() -> str:

@@ -34,7 +34,7 @@ def new_values(doctor: Doctor) -> "class":
 
 
 def insert_new_values(ID, cursor):
-    result = Doctor(cursor.execute(doctor_query.query_find_doctor_by_id(), (ID,)).fetchone())
+    result = Doctor(*cursor.execute(doctor_query.query_find_doctor_by_id(), (ID,)).fetchone())
     values = new_values(result)
     cursor.execute(doctor_query.query_update_doctor_by_id(), (values.nome, values.crm, values.id))
 
