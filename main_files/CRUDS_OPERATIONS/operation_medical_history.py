@@ -32,7 +32,7 @@ def insert_medical_history(values, cursor):
 def new_values(history: History) -> "class":
     print("dê enter apenas caso deseja manter o valor.")
 
-    if (id_paciente := input("digite o novo id: ").strip()) != "":
+    if (id_paciente := input("digite o id do novo paciente: ").strip()) != "":
         history.id_paciente = id_paciente
 
     if (doenca := input("atualizar registro de doença: ")) != "":
@@ -53,6 +53,14 @@ def update_values(ID, cursor):
 
 def del_history(ID, cursor):
     cursor.execute(history_query.query_delete_medical_history_by_id(), (ID,))
+
+def result(find):
+    if found == None:
+        print("Histórico Clínico não existe")
+    elif found != None:
+        print(found)
+
+
 
 def submenu_medical_history(cursor):
     while True:
@@ -79,11 +87,8 @@ def submenu_medical_history(cursor):
         elif consulta == '2':
             ID = int(input('informe o ID do Paciente: ').strip())
             found = find_medical_history(ID, cursor)
-            if found == None:
-                print("Histórico Clínico não existe")
-            elif found != None:
-                print(found)
-
+            result(found)
+            
         elif consulta == '3':
             ID = int(input('informe o ID do Paciente: ').strip())
             found = find_medical_history(ID, cursor)
