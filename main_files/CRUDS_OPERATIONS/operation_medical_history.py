@@ -18,7 +18,7 @@ def find_medical_history(ID, cursor):
 
 
 
-def medical_history(cursor):
+def submenu_medical_history(cursor):
     while True:
         consulta = menu.submenu_medical_history()
 
