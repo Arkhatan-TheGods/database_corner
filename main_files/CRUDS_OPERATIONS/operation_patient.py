@@ -2,6 +2,7 @@ from sqlite3 import Cursor
 import CRUDS_QUERYS.query_patient as patient_query
 import CRUDS_QUERYS.query_medical_history as medical_history
 
+
 class Patient():
 
     def __init__(self, id_, nome, cpf, dt_nascimento, endereco):
@@ -12,7 +13,6 @@ class Patient():
         self.endereco = endereco
 
 
-# get values to use with insert on the table patient
 def values_patient() -> tuple:
     nome = input("nome do paciente: ")
 
@@ -25,7 +25,6 @@ def values_patient() -> tuple:
     return nome, cpf, dt_nasc, endereco
 
 
-# atualiza registro do paciente a partir do ID que é fixo e único
 def new_values(patient: Patient) -> "class":
     print("dê enter apenas caso deseja manter o valor.")
 
@@ -46,7 +45,8 @@ def new_values(patient: Patient) -> "class":
 def insert_new_values(ID, cursor):
     patient = Patient(*cursor.execute(patient_query.query_find_patient_by_id(), (ID,)).fetchone())
     values = new_values(patient)
-    cursor.execute(patient_query.query_update_patient_by_id(), (values.nome,values.cpf, values.dt_nascimento, values.endereco, values.id))
+    cursor.execute(patient_query.query_update_patient_by_id(), (values.nome,
+                   values.cpf, values.dt_nascimento, values.endereco, values.id))
 
 
 def find_patient_by_name(name, cursor):
@@ -59,7 +59,6 @@ def find_patient_by_cpf(cpf, cursor):
     return cursor.execute(patient_query.query_find_patient, by_cpf(), (f"{cpf}")).fetchone()
 
 
-# atualiza os valores na tabela
 def submenu_find_or_update(cursor):
     while True:
         consulta = input(
@@ -97,4 +96,3 @@ def submenu_find_or_update(cursor):
 
         elif consulta == '4':
             break
-

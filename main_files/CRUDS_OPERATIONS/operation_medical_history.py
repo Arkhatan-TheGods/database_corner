@@ -14,7 +14,8 @@ def insert_medical_history() -> tuple:
 
 def find_medical_history(ID, cursor):
     result = cursor.execute(medical_history.query_find_medical_history_by_id_patient()).fetchone()
-    return result if result else None
+    return result
+
 
 
 def medical_history(cursor):
@@ -26,10 +27,13 @@ def medical_history(cursor):
             result = find_patient_by_name(name, cursor)
             for c in result:
                 print(c)
+            
+            ID = int(input('informe o ID do Paciente: ').strip())
+            find_medical_history(ID, cursor)
+
 
         elif consulta == '2':
-            ID = int(input('informe o ID: ').strip())
-
+            pass
         elif consulta == '3':
             pass
 

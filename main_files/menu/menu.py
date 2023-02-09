@@ -37,9 +37,10 @@ def option_choice():
     return option
 
 def submenu_medical_history():
-    consulta = input("""[1] busca por nome 
-        [2] acessar direto pelo ID do Paciente 
-        [3] atualizar histórico clínico 
-        [4] deletar histórico clínico
-        [5] menu principal""")
+    consulta = input("""
+    1 - busca por nome 
+    2 - acessar direto pelo ID do Paciente 
+    3 - atualizar histórico clínico 
+    4 - deletar histórico clínico
+    5 - menu principal""")
     return consulta
