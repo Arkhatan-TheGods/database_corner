@@ -2,15 +2,9 @@ import CRUDS_QUERYS.query_doctor as doctor_query
 from sqlite3 import Cursor
 
 
-def create_table_medico():
-    return """CREATE TABLE IF NOT EXISTS Medico(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    Nome TEXT NOT NULL, CRM TEXT NOT NULL UNIQUE);
-    """
-
-
 class Doctor():
-    def __init__(self, ID, nome, crm):
-        self.id = ID
+    def __init__(self, id_, nome, crm):
+        self.id = id_
         self.nome = nome
         self.crm = crm
 
@@ -26,9 +20,12 @@ def find_doctor_by_name(name, cursor):
 
 
 def new_values(doctor: Doctor) -> "class":
-    if (nome := input("novo nome: ").strip() != ''):
+    print("dê enter apenas caso deseja manter o valor.")
+
+    if (nome := input("novo nome: ").strip()) != "":
         doctor.nome = nome
-    if (crm := input("novo crm: ").strip() != ''):
+
+    if (crm := input("novo crm: ").strip()) != "":
         doctor.crm = crm
     return doctor
 

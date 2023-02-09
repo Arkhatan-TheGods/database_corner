@@ -35,10 +35,10 @@ def new_values(patient: Patient) -> "class":
         patient.cpf = cpf
 
     if (data_nasci := input("nova data de nascimento(dd/mm/yyyy): ").strip()) != "":
-        patient.dt_nascimento
+        patient.dt_nascimento = data_nasci
 
     if (endereco := input("novo endereço: ").strip()) != "":
-        patient.endereco
+        patient.endereco = endereco
     return patient
 
 

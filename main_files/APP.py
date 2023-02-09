@@ -46,17 +46,17 @@ if __name__ == "__main__":
             if option == '1':
                 menu.options_patient()
                 option = menu.option_choice()
-                
+
                 if option == '1':
                     novo = 's'
                     while novo == 's':
                         values = patient_operation.values_patient()
                         cur.execute(patient_query.query_insert_patient(), values)
-                        novo = input('deseja adicionar novo valor [s/n]?').strip().lower()[0]
+                        novo = input('deseja adicionar novo paciente [s/n]? ').strip().lower()[0]
 
                 elif option == '2':
                     patient_operation.submenu_find_or_update(cursor=cur)
-                
+
                 elif option == '3':
                     history_operation.submenu_medical_history(cursor=cur)
 
@@ -70,11 +70,9 @@ if __name__ == "__main__":
                         cur.execute(patient_query.query_delete_patient_by_id(), (ID,))
 
                 elif option == '5':
-                    password = input("informe a senha:")
-                    if password == '54321':
-                        all = cur.execute(patient_query.query_show_all_patient()).fetchall()
-                        for c in all:
-                            print(f"ID: {c[0]:.3f} NOME: {c[1]} CPF: {c[2]} DATA DE NASCIMENTO: {c[3]} ENDEREÇO: {c[4]}")
+                    all = cur.execute(patient_query.query_show_all_patient()).fetchall()
+                    for c in all:
+                        print(f"ID: {c[0]:.3f} NOME: {c[1]} CPF: {c[2]} DATA DE NASCIMENTO: {c[3]} ENDEREÇO: {c[4]}")
 
                 elif option == '6':
                     print("Programa Finalizado.")
@@ -88,7 +86,7 @@ if __name__ == "__main__":
                     novo = 's'
                     while novo == 's':
                         cur.execute(doctor_query.query_insert_doctor(), doctor_operation.insert_values_into_medico())
-                        novo = input('deseja adicionar novo valor [s/n]?').strip().lower()[0]
+                        novo = input('deseja adicionar novo doutor [s/n]? ').strip().lower()[0]
 
                 elif option == '2':
                     doctor_operation.submenu_find_or_update(cursor=cur)
@@ -103,7 +101,7 @@ if __name__ == "__main__":
                 elif option == '4':
                     all = cur.execute(doctor_query.query_Show_all_doctor())
                     for c in all:
-                        print("ID:{} Nome:{} CRM:{}".format(c[0], c[1], c[2]))
+                        print("ID: {} Nome: {} CRM: {}".format(c[0], c[1], c[2]))
 
                 elif option == '5':
                     print("Programa Finalizado.")
