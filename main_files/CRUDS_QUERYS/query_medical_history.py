@@ -24,7 +24,7 @@ def query_find_medical_history_by_id() -> str:
 
 def query_update_medical_history_by_id() -> str:
     return """UPDATE Historico_Clinico 
-    SET ID_Paciente = :id, Doenca = :doenca, Alergia = :alergia, Medicacao WHERE ID = :id ;"""
+    SET ID_Paciente = :id_paciente, Doenca = :doenca, Alergia = :alergia, Medicacao WHERE ID = :id ;"""
 
 
 def query_delete_medical_history_by_id() -> str:

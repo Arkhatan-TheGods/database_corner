@@ -49,14 +49,17 @@ def update_values(ID, cursor):
     history = find_medical_history(ID, cursor)
     values = new_values(history)
     cursor.execute(history_query.query_update_medical_history_by_id(), (history.id_paciente, 
-    history.doenca, history.alergia, history.medicacao))
+    history.doenca, history.alergia, history.medicacao, history.id))
 
+def del_history(ID, cursor):
+    cursor.execute(history_query.query_delete_medical_history_by_id(), (ID,))
 
 def submenu_medical_history(cursor):
     while True:
         consulta = menu.submenu_medical_history()
 
         if consulta == '1':
+            "faz uma busca na tabela paciente e depois pergunta o id para verificar se existe um registro no histórico clínico"
             name = input('informe o nome: ').strip()
             result = find_patient_by_name(name, cursor)
             for c in result:
@@ -90,7 +93,14 @@ def submenu_medical_history(cursor):
             elif found == None:
                 print("Histórico clínico não existe")
         elif consulta == '4':
-            pass
+            ID = int(input('informe o ID do Paciente: ').strip())
+            found = find_medical_history(ID, cursor)
+            if found == None:
+                print("Histórico Clínico não existe")
+            elif found != None:
+                print(found)
+                if input('deseja deletar o registro? [s/n]: ').strip().lower()[0] == 's':
+                    del_history(ID, cursor)
 
         elif consulta == '5':
             break
