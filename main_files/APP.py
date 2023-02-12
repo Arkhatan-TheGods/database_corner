@@ -8,6 +8,7 @@ import CRUDS_QUERYS.query_medical_record as record_query
 import CRUDS_OPERATIONS.operation_patient as patient_operation
 import CRUDS_OPERATIONS.operation_doctor as doctor_operation
 import CRUDS_OPERATIONS.operation_medical_history as history_operation
+import CRUDS_OPERATIONS.operation_medical_record as record_operation
 import traceback
 
 system('cls')
@@ -112,7 +113,10 @@ if __name__ == "__main__":
                 option = menu.option_choice()
 
                 if option == '1':
-                    
+                    novo = 's'
+                    while novo == 's':
+                        cur.execute(record_query.query_insert_medical_record(),(record_operation.values_medical_record()))
+                        novo = input("novo registro [s/n]: ").strip().lower()[0]
                     pass
                 elif option == '2':
                     pass
@@ -121,8 +125,10 @@ if __name__ == "__main__":
                     pass
 
                 elif option == '4':
-                    pass
-
+                    all = cur.execute(record_query.query_show_all_medical_record())
+                    for c in all:
+                        print(c)
+                    
                 elif option == '5':
                     print("Programa Finalizado.")
                     break
