@@ -112,6 +112,7 @@ if __name__ == "__main__":
                 option = menu.option_choice()
 
                 if option == '1':
+                    
                     pass
                 elif option == '2':
                     pass
@@ -120,9 +121,8 @@ if __name__ == "__main__":
                     pass
 
                 elif option == '4':
-                    all = cur.execute(history_query.query_show_all_medical_history()).fetchall()
-                    for c in all:
-                        print(c)
+                    pass
+
                 elif option == '5':
                     print("Programa Finalizado.")
                     break
