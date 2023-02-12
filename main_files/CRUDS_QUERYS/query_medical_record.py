@@ -1,9 +1,9 @@
 def query_create_medical_record() -> str:
     return """CREATE TABLE IF NOT EXISTS Prontuario(
     ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-    ID_Paciente INTEGER NOT NULL, 
+    ID_Paciente INTEGER NOT NULL UNIQUE, 
     ID_Medico INTEGER NOT NULL, 
-    ID_Historico_Clinico INTEGER NOT NULL,
+    ID_Historico_Clinico INTEGER NULL UNIQUE,
     Descricao TEXT NOT NULL, 
     Data_Atendimento TEXT NOT NULL
     ); """

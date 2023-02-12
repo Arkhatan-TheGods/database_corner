@@ -32,5 +32,13 @@ def find_by_id(cursor):
 
 def submenu_medical_record(cursor):
     while True:
-        consulta = input("""""").strip().lower()
-    pass
+        consulta = input("""
+        1 - consulta por id do paciente ou médico 
+        2 - consulta por nome do paciente ou médico
+        3 - atualizar por id do paciente """).strip().lower()
+        if consulta == '1':
+            pass
+        elif consulta == '2':
+            pass
+        elif consulta == '4':
+            break 
