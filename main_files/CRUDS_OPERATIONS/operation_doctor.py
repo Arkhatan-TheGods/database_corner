@@ -39,7 +39,7 @@ def insert_new_values(ID, cursor):
 def submenu_find_or_update(cursor):
     while True:
         consulta = input(
-            "Consultar/Atualizar por: \n[1] Nome \n[2] atualizar direto pelo ID \n[3] voltar Menu Principal \nDigite sua opção: ")
+            "Consultar/Atualizar por: \n[1] Nome \n[2] atualizar direto pelo ID \n[3] voltar Menu Principal \nDigite sua opção: ").strip()
         if consulta == '1':
             name = input("informe o nome: ").strip()
             result = find_doctor_by_name(name, cursor)

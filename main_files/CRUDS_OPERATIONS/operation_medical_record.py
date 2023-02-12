@@ -28,3 +28,9 @@ def find_by_id(cursor):
             return cursor.execute(query_find_medical_history_by_id())
         else:
             print('inválido, repita operação.')
+
+
+def submenu_medical_record(cursor):
+    while True:
+        consulta = input("""""").strip().lower()
+    pass

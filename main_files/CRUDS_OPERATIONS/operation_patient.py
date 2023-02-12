@@ -62,7 +62,7 @@ def find_patient_by_cpf(cpf, cursor):
 def submenu_find_or_update(cursor):
     while True:
         consulta = input(
-            "Consulta/Atualizar \n[1] Nome \n[2] CPF \n[3] atualizar direto pelo ID \n[4] Menu Principal \nDigite sua opção: ")
+            "Consulta/Atualizar \n[1] Nome \n[2] CPF \n[3] atualizar direto pelo ID \n[4] Menu Principal \nDigite sua opção: ").strip()
 
         if consulta == '1':
             name = input("informe o nome: ")

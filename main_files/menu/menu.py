@@ -46,5 +46,5 @@ def submenu_medical_history():
     3 - atualizar histórico clínico 
     4 - deletar histórico clínico
     5 - menu principal
-    Sua opção: """)
+    Sua opção: """).strip()
     return consulta

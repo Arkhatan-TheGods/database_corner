@@ -64,9 +64,10 @@ def result_of_find(find):
     else:
         return find
 
+
 def get_values_id_paciente():
     return int(input('informe o ID do Paciente: ').strip())
-            
+
 
 def submenu_medical_history(cursor):
     while True:
@@ -117,53 +118,3 @@ def submenu_medical_history(cursor):
             break
         else:
             print('opção inválida, tente novamente.')
-
-# def submenu_medical_history(cursor):
-#     while True:
-#         consulta = menu.submenu_medical_history()
-#         "faz uma busca na tabela paciente e depois pergunta o id para verificar se existe um registro no histórico clínico"
-
-#         if consulta == '1':
-#             name = input('informe o nome: ').strip()
-#             result = find_patient_by_name(name, cursor)
-#             for c in result:
-#                 print(c)
-
-#             ID = int(input('informe o ID do Paciente: ').strip())
-#             found = find_medical_history(ID, cursor)
-#             if found == None:
-#                 print("Histórico Clínico não existe")
-#                 if input("deseja criar? [s/n]: ").strip().lower() == 's':
-#                     values = values_medical_history()
-#                     insert_medical_history(values, cursor)
-
-#             elif found != None:
-#                 print(found)
-
-#         elif consulta == '2':
-#             ID = int(input('informe o ID do Paciente: ').strip())
-#             found = find_medical_history(ID, cursor)
-#             result(found)
-
-#         elif consulta == '3':
-#             ID = int(input('informe o ID do Paciente: ').strip())
-#             found = find_medical_history(ID, cursor)
-#             if found != None:
-#                 update_values(ID, cursor)
-
-#             elif found == None:
-#                 print("Histórico clínico não existe")
-#         elif consulta == '4':
-#             ID = int(input('informe o ID do Paciente: ').strip())
-#             found = find_medical_history(ID, cursor)
-#             if found == None:
-#                 print("Histórico Clínico não existe")
-#             elif found != None:
-#                 print(found)
-#                 if input('deseja deletar o registro? [s/n]: ').strip().lower()[0] == 's':
-#                     del_history(ID, cursor)
-
-#         elif consulta == '5':
-#             break
-#         else:
-#             print('opção inválida, tente novamente.')
