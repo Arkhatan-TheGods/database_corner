@@ -119,11 +119,12 @@ if __name__ == "__main__":
                         novo = input("novo registro [s/n]: ").strip().lower()[0]
                     pass
                 elif option == '2':
-                    pass
+                    record_operation.submenu_medical_record(cursor=cur)
 
                 elif option == '3':
-                    pass
-
+                    ID = int(input("informe o ID: ").strip())
+                    cur.execute(record_query.query_delete_medical_record_by_id(), (ID,))
+                
                 elif option == '4':
                     all = cur.execute(record_query.query_show_all_medical_record())
                     for c in all:

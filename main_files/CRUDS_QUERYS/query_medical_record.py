@@ -3,7 +3,7 @@ def query_create_medical_record() -> str:
     ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     ID_Paciente INTEGER NOT NULL UNIQUE, 
     ID_Medico INTEGER NOT NULL, 
-    ID_Historico_Clinico INTEGER NULL UNIQUE,
+    ID_Historico_Clinico INTEGER NULL,
     Descricao TEXT NOT NULL, 
     Data_Atendimento TEXT NOT NULL
     ); """

@@ -5,6 +5,15 @@ from main_files.CRUDS_QUERYS.query_doctor import query_find_doctor_by_id
 from main_files.CRUDS_QUERYS.query_medical_history import query_find_medical_history_by_id
 
 
+class Record():
+    def __init__(self, paciente, medico, historico, sintoma, data):
+        self.paciente = paciente
+        self.medico = medico
+        self.historico = historico
+        self.sintoma = sintoma
+        self.data = data
+
+
 def values_medical_record():
     id_patient = int(input("informe o id do paciente: ").strip())
     id_doctor = int(input("informe o id do médico: ").strip())
@@ -13,8 +22,10 @@ def values_medical_record():
     data = input("informe a data(dd/mm/yyyy): ")
     return id_patient, id_doctor, id_history, description, data
 
+
 def insert_medical_record(values, cursor):
     return cursor.execute(record_query.query_insert_medical_record(), (values))
+
 
 def get_id():
     return int(input("informe o ID: ").strip())
@@ -36,11 +47,30 @@ def find_by_id(ID, cursor):
 
 
 def find_medical_record_by_patient(ID, cursor):
-    return cursor.execute(record_query.query_find_medical_record_by_id_patient(), (ID,)).fetchone()
+    return Record(*cursor.execute(record_query.query_find_medical_record_by_id_patient(), (ID,)).fetchone())
+
 
 def find_medical_record_by_doctor(ID, cursor):
     return cursor.execute(record_query.query_find_medical_record_by_id_doctor(), (ID,)).fetchall()
 
+
+def new_values(record: Record) -> Record:
+    if (id_paciente := input("digite o id do novo paciente: ").strip()) != "":
+      record.paciente = id_paciente
+    if (id_medico := input("digite o id do novo médico: ").strip()) != "":
+        record.medico = id_medico
+    if (id_historico := input("digite o id do histórico clínico: ").strip()) != "":
+        record.historico = id_historico
+    if (description := input('digite a nova descrição: ').strip()) != "":
+        record.sintoma = description
+    if (data := input('atualize a data: ').strip()) != "":
+        record.data
+    return record
+
+def update_values(ID, cursor):
+    record = find_medical_record_by_patient(ID, cursor)
+    values = new_values(record)
+    cursor.execute(record_query.query_update_medical_record(), (values.paciente,values.medico,values.historico,values.sintoma,values.data))
 
 def submenu_medical_record(cursor):
     while True:
@@ -54,42 +84,80 @@ def submenu_medical_record(cursor):
             result, choice = find_by_id(ID, cursor)
             for c in result:
                 print(c)
-            
+
             if choice == '1':
                 ID = get_id()
                 found = find_medical_record_by_patient(ID, cursor)
-                
+
                 if found is None:
                     print("Histórico Clínico não existe")
-                    
+
                     if input("deseja criar? [s/n]").strip().lower()[0] == 's':
                         values = values_medical_record()
                         insert_medical_record(values, cursor)
 
                 else:
-                    for c in found:
-                        print(c)
-            
+                    print(found.__dict__)
+
             elif choice == '2':
                 ID = get_id()
                 found = find_medical_record_by_doctor(ID, cursor)
-                
+
                 if found is None:
                     print("Histórico Clínico não existe")
-                                        
+
                 else:
-                    print(found)
+                    print(found.__dict__)
+
                 if input("deseja criar um Prontuário? [s/n]").strip().lower()[0] == 's':
-                        values = values_medical_record()
-                        insert_medical_record(values, cursor)
-                
+                    values = values_medical_record()
+                    insert_medical_record(values, cursor)
+
             else:
                 print('opção inválida, tente novamente,')
 
         elif consulta == '2':
-            pass
+            ID = get_id()
+            pat_doc = int(input("1 - id do paciente \n2 - id do médico \nsua opção: ").strip())
+            if pat_doc == '1':
+                found = find_medical_record_by_patient(ID, cursor)
+                if found is None:
+                    print("Histórico Clínico não existe")
+
+                    if input("deseja criar? [s/n]").strip().lower()[0] == 's':
+                        values = values_medical_record()
+                        insert_medical_record(values, cursor)
+
+                else:
+                    print(found)
+            elif pat_doc == '2':
+                ID = get_id()
+                found = find_medical_record_by_doctor(ID, cursor)
+
+                if found is None:
+                    print("Histórico Clínico não existe")
+
+                else:
+                    print(found)
+                if input("deseja criar um Prontuário? [s/n]").strip().lower()[0] == 's':
+                    values = values_medical_record()
+                    insert_medical_record(values, cursor)
+
+            elif pat_doc == '2':
+                pass
+            else:
+                print(inválido)
+
         elif consulta == '3':
-            pass
+            ID = get_id()
+            found = find_medical_record_by_patient(ID, cursor)
+            if found is None:
+                print('sem prontuário.')
+            else:
+                print(found.__dict__)
+                if input("deseja atualizar [s/n]: ").lower().strip() == 's':
+                    pass
+
         elif consulta == '4':
             break
         else:
