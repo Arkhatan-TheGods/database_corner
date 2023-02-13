@@ -15,19 +15,14 @@ class Patient():
 
 def values_patient() -> tuple:
     nome = input("nome do paciente: ")
-
     cpf = input("CPF: ")
-
     dt_nasc = input("Data de nascimento(xx/xx/xxxx): ")
-
     endereco = input("Endereço: ")
-
     return nome, cpf, dt_nasc, endereco
 
 
 def new_values(patient: Patient) -> "class":
     print("dê enter apenas caso deseja manter o valor.")
-
     if (nome := input("novo nome: ").strip()) != "":
         patient.nome = nome
 
@@ -50,12 +45,10 @@ def insert_new_values(ID, cursor):
 
 
 def find_patient_by_name(name, cursor):
-
     return cursor.execute(patient_query.query_find_patient_by_name(), (f"{name}%",)).fetchall()
 
 
 def find_patient_by_cpf(cpf, cursor):
-
     return cursor.execute(patient_query.query_find_patient, by_cpf(), (f"{cpf}")).fetchone()
 
 

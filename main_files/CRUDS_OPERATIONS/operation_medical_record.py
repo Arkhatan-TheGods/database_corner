@@ -47,7 +47,7 @@ def find_by_id(ID, cursor):
 
 
 def find_medical_record_by_patient(ID, cursor):
-    return Record(*cursor.execute(record_query.query_find_medical_record_by_id_patient(), (ID,)).fetchone())
+    return cursor.execute(record_query.query_find_medical_record_by_id_patient(), (ID,)).fetchone()
 
 
 def find_medical_record_by_doctor(ID, cursor):
@@ -56,7 +56,7 @@ def find_medical_record_by_doctor(ID, cursor):
 
 def new_values(record: Record) -> Record:
     if (id_paciente := input("digite o id do novo paciente: ").strip()) != "":
-      record.paciente = id_paciente
+        record.paciente = id_paciente
     if (id_medico := input("digite o id do novo médico: ").strip()) != "":
         record.medico = id_medico
     if (id_historico := input("digite o id do histórico clínico: ").strip()) != "":
@@ -67,10 +67,13 @@ def new_values(record: Record) -> Record:
         record.data
     return record
 
+
 def update_values(ID, cursor):
-    record = find_medical_record_by_patient(ID, cursor)
+    record = Record(*find_medical_record_by_patient(ID, cursor))
     values = new_values(record)
-    cursor.execute(record_query.query_update_medical_record(), (values.paciente,values.medico,values.historico,values.sintoma,values.data))
+    cursor.execute(record_query.query_update_medical_record(), (values.paciente,
+                   values.medico, values.historico, values.sintoma, values.data))
+
 
 def submenu_medical_record(cursor):
     while True:
