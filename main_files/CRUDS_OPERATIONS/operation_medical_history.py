@@ -65,7 +65,7 @@ def result_of_find(find):
         return find
 
 
-def get_values_id_paciente():
+def get_id_paciente():
     return int(input('informe o ID do Paciente: ').strip())
 
 

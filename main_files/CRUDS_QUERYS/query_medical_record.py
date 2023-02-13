@@ -16,7 +16,7 @@ def query_find_medical_record_by_id() -> str:
     return " SELECT * FROM Prontuario WHERE ID = :id ; "
 
 def query_find_medical_record_by_id_doctor() -> str:
-    return "SELECT * FROM Prontuario WHERE ID_Medico = :id ; "
+    return "SELECT * FROM Prontuario WHERE ID_Medico = :id LIMIT 10 ; "
 
 def query_find_medical_record_by_id_patient() -> str:
     return " SELECT * FROM Prontuario WHERE ID_Paciente = :id ; "
