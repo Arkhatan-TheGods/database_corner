@@ -22,7 +22,7 @@ if __name__ == "__main__":
                 menu.submenu_patient()
                 
                 if menu.option() == '1':
-                    new = new_patient()
+                    pass
                     
             elif menu.option() == '5':
                 print('programa finalizado')
