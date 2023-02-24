@@ -1,4 +1,4 @@
-def main() -> str:
+def main() -> None:
     main = """Controle de Registros do Hospital
     1 - Pacientes
     2 - Médicos
@@ -11,7 +11,7 @@ def main() -> str:
 def option() -> str:
     return input('informe sua oção: ')
 
-def submenu_patient() -> str:
+def submenu_patient() -> None:
     patient = """Controle de Pacientes
     1 - novo registro 
     2 - procurar e/ou atualizar paciente
