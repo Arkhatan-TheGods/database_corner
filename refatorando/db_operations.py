@@ -1,6 +1,11 @@
 from sqlite3 import Cursor
+from typing import TypedDict, Callable, Any
 
-def operator(cursor: Cursor) -> dict:
+Operation = TypedDict('Operation', {'execute': Callable[[str, tuple], Any], 
+                                    'fetchone': Callable[[str, tuple], Any], 
+                                    'fetchall': Callable[[str, tuple], Any]})
+
+def operator(cursor: Cursor) -> Operation:
     def execute(query: str, parameters: tuple):
         return cursor.execute(query, parameters)
 

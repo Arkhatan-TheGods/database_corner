@@ -1,13 +1,22 @@
 .env.ambient
+
+# ENVIROMENT VENV LOCAL
 env_project_database/
+venv-database_corner/
+
 tests/__pycache__/test_CRUD.cpython-311-pytest-7.2.1.pyc
 o que fazer.txt
+
+
+# DATABASE SQLITE
 Hospital.db
+hospital.db
+tests/teste_hospital.db
+teste_hospital.db
+
 main3.py
 __pycache__/
 crud_paciente2.py
 .vscode/
-tests/teste_hospital.db
-teste_hospital.db
 CRUDS/crud_medico2.py
 .pytest_cache/

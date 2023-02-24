@@ -1,16 +1,27 @@
+from typing import TypedDict, Callable, Any
+
 def new_patient() -> tuple:
-    name = "informe nome:".strip().capitalize()
-    cpf = "informe CPF: ".strip()
-    born = "data de nascimento(dd/mm/yyyy): ".strip()
-    adress = "endereço: ".capitalize().strip()
+    
+    name = input("informe nome: ").strip().capitalize()
+    cpf = input("informe CPF: ").strip().strip()
+    born = input("data de nascimento(dd/mm/yyyy): ").strip()
+    adress = input("endereço: ").capitalize().strip()
+    
     return name, cpf, born, adress
 
+Operation = TypedDict('Operation', {'execute': Callable[[str, tuple], Any], 
+                                    'fetchone': Callable[[str, tuple], Any], 
+                                    'fetchall': Callable[[str, tuple], Any]})
 
-def patient(operation: dict) -> dict:
+def patient(operation: Operation) -> dict:
 
     def create(values: tuple) -> tuple:
-        return operation["execute"]("""INSERT INTO Paciente(Nome,CPF,Data_Nascimento,Endereco)
-        VALUES(:nome, :cpf, :dt_nasc, :endereco) ;""", values).rowcount
+        
+        sql="""INSERT INTO Paciente(Nome,CPF,Data_Nascimento,Endereco)
+            VALUES(:nome, :cpf, :dt_nasc, :endereco);"""
+                
+        return operation["execute"](sql, values).rowcount
+        
 
     def find_by_id(id: tuple) -> tuple:
         return operation["fetchone"]("SELECT * FROM Paciente WHERE ID = :id ;", id)
