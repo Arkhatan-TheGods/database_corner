@@ -1,7 +1,4 @@
-from sqlite3 import Cursor
-
-
-def new_patient():
+def new_patient() -> tuple:
     name = "informe nome:".strip().capitalize()
     cpf = "informe CPF: ".strip()
     born = "data de nascimento(dd/mm/yyyy): ".strip()
@@ -26,9 +23,9 @@ def patient(operation: dict) -> dict:
 
     def update(values: tuple) -> tuple:
         return operation["execute"]("""UPDATE Paciente 
-    SET Nome = :nome, CPF = :cpf, 
-    Data_Nascimento = :dt_nasc, 
-    Endereco = :end WHERE ID = :id ;""", values)
+        SET Nome = :nome, CPF = :cpf, 
+        Data_Nascimento = :dt_nasc, 
+        Endereco = :end WHERE ID = :id ;""", values)
 
     return {"create": create,
             "find_by_id": find_by_id,
