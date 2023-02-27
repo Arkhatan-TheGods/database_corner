@@ -36,10 +36,15 @@ if __name__ == "__main__":
                     id_patient = fn_patient["create"](new_patient())
                     
                 elif option_submenu == '2':
+                    print('chegou aqui')
                     choice = menu.submenu_find_or_update_patient()
                     result = patient_operation(choice, fn_patient)
                     print(result)
-
+                
+                elif option_submenu == '5':
+                    print('chegou na opção 5')
+                    print(fn_patient['show_all']())
+           
             elif option_menu == '5':
                 print('programa finalizado')
                 break

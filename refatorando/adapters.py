@@ -18,16 +18,14 @@ def patient(operation: Operation) -> dict:
     def create(values: tuple) -> tuple:
         
         sql="""INSERT INTO Paciente(Nome,CPF,Data_Nascimento,Endereco)
-            VALUES(:nome, :cpf, :dt_nasc, :endereco);"""
-                
+            VALUES(:nome, :cpf, :dt_nasc, :endereco);"""        
         return operation["execute"](sql, values).rowcount
         
-
     def find_by_id(id: tuple) -> tuple:
         return operation["fetchone"]("SELECT * FROM Paciente WHERE ID = :id ;", id)
 
     def find_by_name(name: str) -> tuple:
-        return operation["fetchall"]("SELECT * FROM Paciente WHERE LOWER(Nome) = LOWER(:name) LIMIT 10 ;", (f"{name}%",))
+        return operation["fetchall"]("SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER(:nome) LIMIT 10 ;", (f"{name}%",))
 
     def find_by_cpf(cpf: tuple) -> tuple:
         return operation["fetchone"]("SELECT * FROM Paciente WHERE CPF = :cpf ;", cpf)
@@ -46,4 +44,5 @@ def patient(operation: Operation) -> dict:
             "find_by_id": find_by_id,
             "find_by_name": find_by_name,
             "find_by_cpf": find_by_cpf,
-            "update": update}
+            "update": update,
+            "show_all": show_all}

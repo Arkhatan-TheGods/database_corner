@@ -73,7 +73,7 @@ if __name__ == "__main__":
                 elif option == '5':
                     all = cur.execute(patient_query.query_show_all_patient()).fetchall()
                     for c in all:
-                        print(f"ID: {c[0]:.3f} NOME: {c[1]} CPF: {c[2]} DATA DE NASCIMENTO: {c[3]} ENDEREÇO: {c[4]}")
+                        print(f"ID: {c[0]} NOME: {c[1]} CPF: {c[2]} DATA DE NASCIMENTO: {c[3]} ENDEREÇO: {c[4]}")
 
                 elif option == '6':
                     print("Programa Finalizado.")

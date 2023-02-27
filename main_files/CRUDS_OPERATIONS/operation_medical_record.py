@@ -1,8 +1,8 @@
 from sqlite3 import Cursor
-import main_files.CRUDS_QUERYS.query_medical_record as record_query
-from main_files.CRUDS_QUERYS.query_patient import query_find_patient_by_id
-from main_files.CRUDS_QUERYS.query_doctor import query_find_doctor_by_id
-from main_files.CRUDS_QUERYS.query_medical_history import query_find_medical_history_by_id
+import CRUDS_QUERYS.query_medical_record as record_query
+from CRUDS_QUERYS.query_doctor import query_find_doctor_by_id
+from CRUDS_QUERYS.query_patient import query_find_patient_by_id
+from CRUDS_QUERYS.query_medical_history import query_find_medical_history_by_id
 
 
 class Record():

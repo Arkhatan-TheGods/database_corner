@@ -14,5 +14,7 @@ def operator(cursor: Cursor) -> Operation:
 
     def fetchall(query: str, parameters: tuple) -> list[tuple]:
         return cursor.execute(query, parameters).fetchall()
-
+    def all(query: str) -> tuple[list]:
+        return cursor.execute(query)
+        
     return {"execute": execute, "fetchone": fetchone, "fetchall": fetchall}
