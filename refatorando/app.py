@@ -25,17 +25,22 @@ if __name__ == "__main__":
             fn_patient=patient(operator(cursor))
 
             menu.main()
-            if menu.option() == '1':
-                menu.submenu_patient()
+            option_menu = menu.option()
+            
+            if option_menu == '1':
 
-                if menu.option() == '1':
+                menu.submenu_patient()
+                
+                option_submenu = menu.option()
+                if option_submenu == '1':
                     id_patient = fn_patient["create"](new_patient())
                     
-                elif menu.option() == '2':
+                elif option_submenu == '2':
                     choice = menu.submenu_find_or_update_patient()
-                    result = patient_operation(choice)
+                    result = patient_operation(choice, fn_patient)
+                    print(result)
 
-            elif menu.option() == '5':
+            elif option_menu == '5':
                 print('programa finalizado')
                 break
 

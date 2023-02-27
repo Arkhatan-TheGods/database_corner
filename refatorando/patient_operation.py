@@ -1,4 +1,8 @@
-def patient_operation(choice: str) -> tuple:
+from adapters import patient, new_patient
+from db_operations import operator
+
+
+def patient_operation(choice: str, fn_patient) -> dict:
     while True:
         if choice == '1':
             name = input('informe o nome: ').strip()
@@ -7,7 +11,7 @@ def patient_operation(choice: str) -> tuple:
         elif choice == '2':
             cpf = input('informe o CPF: ').strip()
             return fn_patient["find_by_cpf"](cpf)
-            
+
         elif choice == '3':
             ID = int(input("informe o ID: ").strip())
             return fn_patient["find_by_id"](ID)
