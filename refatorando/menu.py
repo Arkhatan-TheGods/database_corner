@@ -25,8 +25,7 @@ def submenu_patient() -> None:
     print(patient)
 
 def submenu_find_or_update_patient() -> str:
-    return input(
-    """
+    return input("""
     Consulta/Atualizar 
     1 - Nome 
     2 - CPF 
@@ -34,3 +33,5 @@ def submenu_find_or_update_patient() -> str:
     4 - Menu Principal 
     Digite sua opção: """).strip()
 
+def update() -> str:
+    return input("deseja atualizar [s/n]? ").strip().lower()[0]

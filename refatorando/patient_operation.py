@@ -21,3 +21,12 @@ def patient_operation(choice: str, fn_patient) -> dict:
 
         else:
             print('opção inválida, tente novamente')
+
+def update_patient(fn_patient) -> tuple:
+    ID = int(input("informe o ID: ").strip())
+    result = fn_patient["find_by_id"](ID)
+    
+    if result:
+        print(result)
+    else:
+        print('não encontrado.')
