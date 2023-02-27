@@ -27,7 +27,7 @@ def patient(operation: Operation) -> dict:
         return operation["fetchone"]("SELECT * FROM Paciente WHERE ID = :id ;", id)
 
     def find_by_name(name: tuple) -> tuple:
-        return operation["fetchall"]("SELECT * FROM Paciente WHERE ID = :id ;", name)
+        return operation["fetchall"]("SELECT * FROM Paciente WHERE LOWER(Nome) = LOWER(:name) LIMIT 10 ;", (f"{name}%"))
 
     def find_by_cpf(cpf: tuple) -> tuple:
         return operation["fetchone"]("SELECT * FROM Paciente WHERE CPF = :cpf ;", cpf)

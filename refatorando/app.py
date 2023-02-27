@@ -29,8 +29,12 @@ if __name__ == "__main__":
 
                 if menu.option() == '1':
                     id_patient = fn_patient["create"](new_patient())
-                    print(f"id_patient:>>>{id_patient}")
                     
+                elif menu.option() == '2':
+                    choice = menu.submenu_find_or_update_patient()
+                    if choice == '1':
+                        name = input('informe o nome: ').strip()
+                        find_by_name = fn_patient["find_by_name"](name)
 
             elif menu.option() == '5':
                 print('programa finalizado')

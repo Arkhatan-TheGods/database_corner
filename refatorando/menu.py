@@ -1,3 +1,5 @@
+
+
 def main() -> None:
     main = """Controle de Registros do Hospital
     1 - Pacientes
@@ -18,3 +20,12 @@ def submenu_patient() -> None:
     3 - deletar registro do paciente
     4 - voltar menu principal"""
     print(patient)
+
+def submenu_find_or_update_patient() -> str:
+    return input(
+            """Consulta/Atualizar 
+            [1] Nome 
+            [2] CPF 
+            [3] atualizar direto pelo ID 
+            [4] Menu Principal Digite sua opção: """).strip()
+    
