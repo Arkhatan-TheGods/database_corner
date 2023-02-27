@@ -38,7 +38,7 @@ def patient(operation: Operation) -> dict:
 
     def show_all() -> tuple:
         query = "SELECT * FROM Paciente;"
-        return operation["fetchall"](query)
+        return operation["all"](query)
 
     return {"create": create,
             "find_by_id": find_by_id,

@@ -42,8 +42,8 @@ if __name__ == "__main__":
                     print(result)
                 
                 elif option_submenu == '5':
-                    print('chegou na opção 5')
-                    print(fn_patient['show_all']())
+                    for r in fn_patient['show_all']():
+                        print(r)
            
             elif option_menu == '5':
                 print('programa finalizado')
