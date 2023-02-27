@@ -11,3 +11,5 @@ dentro de paciente irá ter as operações de Criar, Ler, Atualizar e Deletar re
 dentro de médico e prontuário também as operações CLAD/CRUD.
 
 o arquivo em qual eu trabalho mais se chama main2.py nele que contém o projeto principal, com o tempo irei arrumar os nomes.
+
+python version: 3.11.1
