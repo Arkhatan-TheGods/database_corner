@@ -4,6 +4,7 @@ from tables import entitys
 import menu
 from adapters import patient, new_patient
 from db_operations import operator
+from patient_operation import patient_operation
 
 
 if __name__ == "__main__":
@@ -32,9 +33,7 @@ if __name__ == "__main__":
                     
                 elif menu.option() == '2':
                     choice = menu.submenu_find_or_update_patient()
-                    if choice == '1':
-                        name = input('informe o nome: ').strip()
-                        find_by_name = fn_patient["find_by_name"](name)
+                    result = patient_operation(choice)
 
             elif menu.option() == '5':
                 print('programa finalizado')
