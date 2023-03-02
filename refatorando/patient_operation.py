@@ -28,12 +28,12 @@ def update_patient(fn_patient) -> tuple:
     
     if result:
         print(result)
-        dados = {"id":result[0], "nome":result[1], "cpf":result[2], "data de nascimento":result[3], "endereço":result[4]}
+        dados = {"nome":result[1], "cpf":result[2], "data de nascimento":result[3], "endereço":result[4]}
         for c in dados:
             novo_valor = input(f"novo valor para {c}: ").strip()
             if novo_valor != "":
                 dados[c] = novo_valor
-        values = (dados["nome"], dados["cpf"], dados["data de nascimento"], dados["endereço"], dados["id"])
+        values = (dados["nome"], dados["cpf"], dados["data de nascimento"], dados["endereço"], dados["id"], result[0])
         fn_patient["update"](values)
     else:
         print('não encontrado.')
