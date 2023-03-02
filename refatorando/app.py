@@ -4,7 +4,7 @@ from tables import entitys
 import menu
 from adapters import patient, new_patient
 from db_operations import operator
-from patient_operation import find_patient, get_id_patient, update_patient
+from patient_operation import find_patient, get_id_patient, update_patient, insert_update_patient
 
 
 if __name__ == "__main__":
@@ -48,9 +48,10 @@ if __name__ == "__main__":
 
                     update = menu.update()
                     if update == 's':
-                        ID = input('informe o ID: ').strip()
-                        update_patient(fn_patient, ID)
-                        pass
+                        ID = get_id_patient(choice, result)
+                        updates = update_patient(fn_patient, ID)
+                        insert_update_patient(updates, fn_patient)
+                        
 
                 elif option_submenu == '5':
                     for r in fn_patient['show_all']():
