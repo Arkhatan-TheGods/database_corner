@@ -35,15 +35,14 @@ if __name__ == "__main__":
                 if option_submenu == '1':
                     id_patient = fn_patient["create"](new_patient())
                     
-                elif option_submenu == '2':
-                    print('chegou aqui')
+                elif option_submenu == '2':                   
                     choice = menu.submenu_find_or_update_patient()
                     result = patient_operation(choice, fn_patient)
                     print(result)
 
                     update = menu.update()
                     if update == 's':
-                        update_patient()
+                        update_patient(fn_patient)
                         pass
 
                 elif option_submenu == '5':
@@ -53,6 +52,8 @@ if __name__ == "__main__":
             elif option_menu == '5':
                 print('programa finalizado')
                 break
+            
+            conn_.commit()
 
         except Exception as e:
             print(e)

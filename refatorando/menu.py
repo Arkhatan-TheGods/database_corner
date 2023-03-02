@@ -29,7 +29,7 @@ def submenu_find_or_update_patient() -> str:
     Consulta/Atualizar 
     1 - Nome 
     2 - CPF 
-    3 - atualizar direto pelo ID 
+    3 - buscar pelo ID 
     4 - Menu Principal 
     Digite sua opção: """).strip()
 

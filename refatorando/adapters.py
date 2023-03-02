@@ -21,20 +21,22 @@ def patient(operation: Operation) -> dict:
             VALUES(:nome, :cpf, :dt_nasc, :endereco);"""        
         return operation["execute"](sql, values).rowcount
         
-    def find_by_id(id: tuple) -> tuple:
-        return operation["fetchone"]("SELECT * FROM Paciente WHERE ID = :id ;", id)
+    def find_by_id(id: int) -> tuple:
+        return operation["fetchone"]("SELECT * FROM Paciente WHERE ID = :id ;", (id,))
 
     def find_by_name(name: str) -> tuple:
         return operation["fetchall"]("SELECT * FROM Paciente WHERE LOWER(Nome) LIKE LOWER(:nome) LIMIT 10 ;", (f"{name}%",))
 
-    def find_by_cpf(cpf: tuple) -> tuple:
+    def find_by_cpf(cpf: str) -> tuple:
         return operation["fetchone"]("SELECT * FROM Paciente WHERE CPF = :cpf ;", cpf)
 
-    def update(values: tuple) -> tuple:
+    def update(values: dict) -> tuple:
         return operation["execute"]("""UPDATE Paciente 
-        SET Nome = :nome, CPF = :cpf, 
-        Data_Nascimento = :dt_nasc, 
-        Endereco = :end WHERE ID = :id ;""", values)
+    SET Nome = :nome, 
+    CPF = :cpf, 
+    Data_Nascimento = :dt_nasc, 
+    Endereco = :end 
+    WHERE ID = :id ;""", values)
 
     def show_all() -> tuple:
         query = "SELECT * FROM Paciente;"
