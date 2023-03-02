@@ -47,7 +47,7 @@ def update_patient(fn_patient, ID) -> tuple:
     
     result = fn_patient["find_by_id"](ID)
 
-    print(result)
+    print(result, '\n dê enter se deseja manter os valores atuais.')
     dados = {"nome":result[1], "cpf":result[2], "data de nascimento":result[3], "endereço":result[4]}
     for c in dados:
         novo_valor = input(f"novo valor para {c}: ").strip()
